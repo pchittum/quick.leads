@@ -348,8 +348,6 @@
 <div class="header">
     <a onClick="window.location = '/apex/EventLead_Index';"><img id="icon" src="{!URLFOR($Resource.EventLeadResources,'/images/icon.png')}"/></a>
     <a class="brand" href="#">Event Leads</a>
-    <!-- PJCTODO: add button to select new event -->
-    <!-- PJCTODO: DONE, added to EventLead_Home on plus button. add button to return to SFDC home/home.jsp -->
 </div>
 
 <div class="container">
@@ -374,24 +372,18 @@ app.config(function ($routeProvider) {
         when('/view/:offerId', {controller: OfferViewCtrl, templateUrl: 'apex/EventLead_ViewOffer'}).
         when('/continue', {controller: ContinueCtrl, templateUrl: 'apex/EventLead_Continue'}).
         otherwise({redirectTo: '/'});
-
-//        when('/continue', {controller: ContinueCtrl, templateUrl: 'apex/EventLead_Continue'}).
-
-
-/* removed
-        when('/edit/:contactId', { controller: ContactDetailCtrl, templateUrl: 'apex/MobileSample_AngularEdit'}).
-        when('/new', { controller: ContactCreateCtrl, templateUrl: 'apex/MobileSample_AngularDetail'}).
-        when('/view/:contactId', {controller: ContactViewCtrl, templateUrl: 'apex/MobileSample_AngularView'}).
-        when('/events', {controller: CampaignListCtrl, templateUrl: 'apex/EventLead_Event'}).
-*/
-
 });
 
+/**
+ * ActiveEvent service object for cached event information that will be used across several queries and pages.  
+ *
+ * EventId: store the selected ID for the event. Drives which child campaigns come to represent an "Offer" in our context
+ * EventName: Name for labeling and identity on pages
+ * EventBranding: NOT CURRENTLY IMPLEMENTED wish list to apply CSS for specific events so that selecting an event updates certain UI elements
+ * EventCampaignMemberIds: NOT IMPLEMENTED wish list item an array of IDs of contacts to pass into an IN clause when querying contacts
+ */
+
 app.factory('ActiveEvent', function() {
-    //EventId: store the selected ID for the event
-    //EventName: Name for labeling and identity on pages
-    //EventBranding: NOT CURRENTLY IMPLEMENTED wish list to apply CSS for specific events so that selecting an event updates certain UI elements
-    //EventCampaignMemberIds: NOT IMPLEMENTED wish list item an array of IDs of contacts to pass into an IN clause when querying contacts
     return {
         EventId : '',
         EventName : '',
@@ -400,13 +392,31 @@ app.factory('ActiveEvent', function() {
     };
 });
 
+/**
+ * NewLeadService service object for cached state about the contact, lead and campaign members we record each time a person at our event expresses interest in an offer.  
+ *
+ * Currently this is hard coded, but at some point I could see using a custom setting or some other Salesforce-driven data
+ *
+ * OfferId: Campaign ID for the offer that someone has expressed interest in
+ * FirstName: Lead first name
+ * LastName: Lead last name
+ * Email: Lead email
+ * CompanyName: Lead Company
+ * LeadStatus: Status value to be set on lead - Default "Open"
+ * LeadSource: LeadSource field value to be set on Lead - Default "Trade Show"
+ * AcceptedMbrStatus: Status on CampaignMember for someone who has indicated they want the offer
+ * RejectedMbrStatus: Status on CampaignMember for someone who has indicated interest in the offer
+ * ContactId: Cached contact id. Currently not used.
+ * LeadId: LeadId. We hold onto this until the contact has walked away from the booth as standard Salesforce campaign behavior is to associate on Lead to many campaigns using Campaign member. This makes the Lead sticky and means we will not require additional lookups of a contact when they are interested in multiple offers.
+ */
+
 app.factory('NewLeadService', function() {
     return {
         OfferId : '', 
         FirstName : '',
         LastName : '', 
         Email : '',
-        Company : '',
+        CompanyName : '',
         LeadStatus : 'Open',
         LeadSource : 'Trade Show',
         AcceptedMbrStatus : 'Responded',
@@ -546,6 +556,10 @@ angular.module('CampaignMember', []).factory('CampaignMember', function (Angular
     return CampaignMember;
 });
 
+/**
+ * Controller for EventLead_Home partial
+ */
+
 function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
 
     $scope.authenticated = AngularForce.authenticated();
@@ -559,7 +573,9 @@ function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
         console.log('Event Id is: ' +ActiveEvent.EventId);
         return $location.path('/offers');
     }
-
+	
+	//TODO: not implemented currently
+	//at some point this will likely come up for larger organizations where there might be many active event-type campaigns
     Event.query(
         function (data) {
             $scope.events = data.records;
@@ -592,6 +608,10 @@ function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
     }
 }
 
+/**
+ * Controller for Login page controller. Not used typically for VF app
+ */
+
 function LoginCtrl($scope, AngularForce, $location) {
     $scope.login = function () {
         AngularForce.login();
@@ -604,10 +624,15 @@ function LoginCtrl($scope, AngularForce, $location) {
     }
 }
 
+//Not in use. Hold-over from Quick Start app. Leaving this here to have an example for a callback function 
 function CallbackCtrl($scope, AngularForce, $location) {
     AngularForce.oauthCallback(document.location.href);
-    $location.path('/contacts');
+    $location.path('/home');
 }
+
+/**
+ * Controller for EventLead_Offer partial. Present a list of child campaigns of our Event campaign. Implements actions for selecting an offer. 
+ */
 
 
 function OfferListCtrl($scope, AngularForce, $location, Offer, ActiveEvent, NewLeadService) {
@@ -641,6 +666,10 @@ function OfferListCtrl($scope, AngularForce, $location, Offer, ActiveEvent, NewL
     };
 
 }
+
+/**
+ * Controller for EventLead_Contact partial. Present a list of contacts. Implements actions for selecting an offer. 
+ */
 
 function ContactListCtrl($scope, AngularForce, $location, Contact, NewLeadService) {
     $scope.authenticated = AngularForce.authenticated();

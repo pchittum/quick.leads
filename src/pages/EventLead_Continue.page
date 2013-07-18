@@ -4,7 +4,7 @@
     </div>
     <div class="well">
         <div class="row">
-            Would you like to view more offers as this contact? 
+            Would you like to view more offers for this contact? 
         </div>
         <div class="formbuttonwrapper">
             <button ng-click="keepLead()" class="formbutton"><img src="{!URLFOR($Resource.EventLeadResources,'/images/accept.png')}"/></button>
