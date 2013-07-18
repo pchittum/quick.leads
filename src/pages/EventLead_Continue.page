@@ -1,0 +1,14 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" >
+    <div class="heading1">
+        View More Offers?
+    </div>
+    <div class="well">
+        <div class="row">
+            Would you like to view more offers as this contact? 
+        </div>
+        <div class="formbuttonwrapper">
+            <button ng-click="keepLead()" class="formbutton"><img src="{!URLFOR($Resource.EventLeadResources,'/images/accept.png')}"/></button>
+            <button ng-click="clearLead()" class="formbutton"><img src="{!URLFOR($Resource.EventLeadResources,'/images/cancel.png')}"/></button>
+        </div>
+    </div>
+</apex:page>

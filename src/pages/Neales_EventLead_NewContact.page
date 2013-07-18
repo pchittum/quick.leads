@@ -1,0 +1,51 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+<div class="heading1">New Contact</div>
+<form class="well" name="myForm">
+    <div class="control-group" ng-class="{error: myForm.Name.$invalid}">
+        <div class="formsection">
+            <label>First Name</label>
+            <input type="text" name="FirstName" ng-model="contact.FirstName" required="true" />
+            <span ng-show="myForm.FirstNameName.$error.required" class="help-inline">
+            *</span>
+        </div>
+        <div class="formsection">
+            <label>Last Name</label>
+            <input type="text" name="LastName" ng-model="contact.LastName" required="true" />
+            <span ng-show="myForm.LastName.$error.required" class="help-inline">
+            *</span>
+        </div>
+        <div class="formsection">
+            <label>Title</label>
+            <input type="text" name="Title" ng-model="contact.Title" required="true" />
+            <span ng-show="myForm.Title.$error.required" class="help-inline">
+            *</span>
+        </div>
+        <div class="formsection">
+            <label>Company Name</label>
+            <input type="text" name="CompanyName" ng-model="CompanyName" required="true" />
+            <span ng-show="myForm.CompanyName.$error.required" class="help-inline">
+            *</span>
+        </div>
+        <div class="formsection">
+            <label>Email</label>
+            <input type="text" name="Email" ng-model="contact.Email" required="true" />
+            <span ng-show="myForm.Email.$error.required" class="help-inline">
+            *</span>
+        </div>
+        <div class="formsection">
+            <label>Phone</label>
+            <input type="text" name="Phone" ng-model="contact.Phone" required="true" />
+            <span ng-show="myForm.Phone.$error.required" class="help-inline">
+            *</span>
+        </div>
+        
+        <input disabled="disabled" type="hidden" name="Id" ng-model="contact.Id" />
+        <div class="formbuttonwrapper">
+            <button ng-click="save()" ng-disabled="isClean() || myForm.$invalid" class="formbutton"><img src="{!URLFOR($Resource.EventLeadResources,'/images/accept.png')}"/></button>
+            <button ng-click="doCancel()" class="formbutton"><img src="{!URLFOR($Resource.EventLeadResources,'/images/cancel.png')}"/></button>
+        </div>
+        
+    </div>
+</form>
+
+</apex:page>

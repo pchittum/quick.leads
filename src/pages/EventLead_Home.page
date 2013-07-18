@@ -1,0 +1,98 @@
+<apex:page title="Event Lead" showHeader="false" sidebar="false" standardStylesheets="false">
+<div ng-show="isWorking()">
+    <p>Working</p>
+</div>
+
+<div ng-show="!isWorking()">
+    <!-- This div is only displayed in desktops (see below for mobile phones)-->
+    <div class="hidden-phone">
+        <!-- nick, I changed the URL here. for now not adding new events/campaigns from here, but if you have an "exit" image that might work instead of text -->
+        <a href="/home/home.jsp" class="addbutton"><img class="plus" src="{!URLFOR($Resource.EventLeadResources,'/images/exit.png')}"/></a>
+        <div class="heading1">
+            Select An Event to Work With
+            <!-- NICK EDIT - Removed event search box for the moment since it doesnt seem to be functional -->
+            <!-- <input type="text" ng-model="searchTerm" class="search-query" placeholder="Search" ng-change="doSearch(searchString)"/> -->
+        </div>
+   
+        <div class="tablewrapper">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class='hidden-phone'>Description</th>
+                    <th class='hidden-phone'>Type</th>
+                    <th>Status</th>
+                    <th>Start</th>
+                    <th class='hidden-phone'>End</th>
+                    <th>Responses</th>
+                    <th class='hidden-phone'>Contacts</th>
+                    <th class='hidden-phone'>Leads</th>
+                </tr>
+                </thead>
+                <tbody>
+    
+                    <tr ng-repeat="campaign in events" ng-click="setCampaign(campaign.Id)" >
+                        <td class="{{campaign.Status}}">{{campaign.Name}}</td>
+                        <td class='hidden-phone'>{{campaign.Description}}</td>
+                        <td class='hidden-phone'>{{campaign.Type}}</td>
+                        <td>{{campaign.Status}}</td>
+                        <td>{{campaign.StartDate}}</td>
+                        <td class='hidden-phone'>{{campaign.EndDate}}</td>
+                        <td>{{campaign.NumberOfResponses}}</td>
+                        <td class='hidden-phone'>{{campaign.NumberOfContacts}}</td>
+                        <td class='hidden-phone'>{{campaign.NumberOfLeads}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- This div is only displayed in mobile phones (see above for desktops) -->
+    <div class="visible-phone">
+        <a href="/home/home.jsp" class="addbutton"><img class="plus" src="{!URLFOR($Resource.EventLeadResources,'/images/exit.png')}"/></a>
+        <div class="heading1">
+            Select A Campaign to Work With
+            <!-- NICK EDIT - Removed event search box for the moment since it doesnt seem to be functional -->
+            <!-- <input type="text" ng-model="searchTerm" class="search-query portrait" placeholder="Search" /> -->
+        </div>
+        <table class="table">
+            <tr ng-click="setCampaign(campaign.Id)" ng-repeat="campaign in events" class="{{campaign.Status}}">
+                <td><b class="fullname">{{campaign.Name}}</b>
+                    <br/>
+                    <small class="metadata">{{campaign.StartDate}}</small>
+                </td>
+                <td>
+                    <i class="icon-chevron-right"></i>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>    
+       
+<!--     
+<div class="container">
+    <div class="span4 well">
+        <p style='text-align: center;padding-bottom: 30px;'>
+            <button class="btn btn-large btn-primary" ng-click="viewContacts()">View Contacts</button>
+        </p>
+        <p style='text-align: center;padding-bottom: 30px;'>
+            <button class="btn btn-large btn-primary" ng-click="viewCampaigns()">View Campaigns</button>
+        </p>
+        <p>This is a Mobile Pack Demo. <a href="https://github.com/rajaraodv/SFAngularBootStrap">Learn more</a>.</p>
+
+        <p>Built with <a href="http://angularjs.org">AngularJS</a> and <a href="http://twitter.github.com/bootstrap">Twitter Bootstrap</a>.
+        </p>
+
+        <p>Designed for use with your <a
+                href="http://www.developerforce.com/events/regular/registration.php?d=70130000000EjHb">Salesforce
+            Developer Edition</a>.</p>
+
+        <p>Built by<br />
+            <a style="margin-left: 20px;" href="http://twitter.com/ReidCarlberg">Reid Carlberg</a><br/> 
+            <a style="margin-left: 20px;" href="http://twitter.com/rajaraodv">Raja Rao DV</a><br/>
+            <a style="margin-left: 20px;" href="http://twitter.com/dcarroll">Dave Carroll</a>
+        </p>
+    </div>
+</div>
+ -->
+</apex:page>

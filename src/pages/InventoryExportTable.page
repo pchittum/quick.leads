@@ -1,0 +1,7 @@
+<apex:page standardController="Merchandise__c" recordSetVar="merchandise" showHeader="false" contentType="text/csv#InventoryExport.csv">
+    <apex:dataTable value="{!merchandise}" var="m">
+        <apex:column value="{!m.Name},"/>
+        <apex:column value="{!m.Quantity__c},"/>
+        <apex:column value="{!m.Price__c}"/>
+    </apex:dataTable>
+</apex:page>

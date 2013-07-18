@@ -1,0 +1,962 @@
+<apex:page title="Event Lead" showHeader="false" sidebar="false" standardStylesheets="false">
+<html ng-app="EventLeadVF">
+    
+<head>
+    <title>Event Leads</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <style>
+        a, html, body, div, button{
+            -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+        }
+        @font-face{
+            font-family: opensans;
+            src: url('{!URLFOR($Resource.EventLeadResources,'/style/fonts/OpenSans-Light.ttf')}');
+        }
+        @font-face{
+            font-family: opensansr;
+            src: url('{!URLFOR($Resource.EventLeadResources,'/style/fonts/OpenSans.ttf')}');
+        }
+        body{
+            min-width:1024px;
+            min-height:748px;
+            margin:0px;
+            padding:0px;
+            font-family: 'opensans' !important;
+        }
+        .container{
+            width:100% !important;
+            position:relative;
+            top:50px;
+        }
+        .heading1 {
+            font-weight: normal;
+            font-size: 40px;
+            padding: 50px 40px 40px 40px;
+            margin: 0px;
+            color: #353535;
+            border-bottom: 1px solid #eee;
+            font-family: 'opensans';
+            width:100%;
+            box-sizing: border-box;
+            line-height: 55px;
+        }
+        
+        th{
+            text-transform: uppercase;
+            font-size: 14px !important;
+            font-weight: bold !important;
+            padding: 0px 0px 10px 0px;
+            margin: 0px;
+        
+        }
+        td, th {
+            padding: 24px 10px 24px 10px !important;
+        }
+        td{
+            border-top: 1px solid #eee !important;
+        }
+        .button {
+            text-align: center;
+        }
+        
+        .header{
+            height: 50px;
+            width: 100%;
+            color: #FFF;
+            font-size: 14px;
+            background: #149ecd;
+            font-weight: bold;
+            position:fixed;
+            z-index:100;
+        }
+        .heading1 input{
+            float: right;
+            border: 1px solid #eee !important;
+            margin-top: 17px;
+        }
+        .header .brand, .header .brand:hover {
+            display:block;
+            color:#FFF;
+            text-decoration:none;
+            line-height: 50px;
+            padding: 0px 15px;
+            float: left;
+            height: 50px;
+            background:#1490ba;
+        }
+        
+        .header #icon {
+            float: left;
+            height: 26px;
+            position: relative;
+            top: 12px;
+            margin: 0px 15px 0px 30px;
+        }
+        
+        .addbutton{
+            position:fixed;
+            top:0px;
+            right:0px;
+            z-index:101;
+        }
+        .plus{
+            height: 26px;
+            position: relative;
+            top: 12px;
+            margin: 0px 15px 0px 30px;
+        }
+        tr:nth-child(even){ 
+            background-color:#eee; 
+        }
+        .tablewrapper{
+            padding:0px 40px;
+        }
+        .gridwrapper{
+           padding:20px;
+        }
+        td:hover{
+            cursor:pointer;
+        }
+        tr.Completed:after, td.Completed:after{
+            content: '';
+            width: 0;
+            height: 0;
+            background: none;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid #00AE67;
+            position: absolute;
+            left: 0px;
+            margin-top: 25px;
+        }
+        tr.Progress:after, td.Progress:after {
+            content: '';
+            width: 0;
+            height: 0;
+            background: none;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid #EF7739;
+            position: absolute;
+            left: 0px;
+            margin-top: 25px;
+        }
+        tr.Planned:after, td.Planned:after {
+            content: '';
+            width: 0;
+            height: 0;
+            background: none;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid #FBDD40;
+            position: absolute;
+            left: 0px;
+            margin-top: 25px;
+        }
+        tr.Aborted:after, td.Aborted:after{
+            content: '';
+            width: 0;
+            height: 0;
+            background: none;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            border-left: 20px solid #E15550;
+            position: absolute;
+            left: 0px;
+            margin-top: 25px;
+        }
+        td.Completed:after, td.Progress:after, td.Aborted:after, td.Planned:after{
+            margin-top:0px;
+            top:15px;
+            left:-40px;
+        }
+        td.Completed, td.Progress, td.Aborted, td.Planned{
+            position:relative;
+        }
+        .grid{
+            float:left;
+            width:206px;
+            height:300px;
+            margin:20px;
+            cursor:pointer;
+        }
+        .grid .image{
+            width:100%;
+            height:206px;
+            background:#9B63D8;
+            border-radius:4px;
+        }
+        .grid .title{
+            text-transform: uppercase;
+            font-size: 14px !important;
+            font-weight: bold !important;
+            padding: 0px 0px 10px 0px;
+            margin: 0px;
+            padding:20px 0px;
+        }
+        .well{
+            padding:40px 80px;
+            background: #eee;
+            border: 0px !important;
+            border-radius: 0px;
+        }
+        .formsection{
+            width:285px;
+            float:left;
+        }
+        .control-group {
+            display: table;
+        }
+        .formbutton{
+            width: 64px;
+            height: 64px;
+            margin: 20px;
+            float: left;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .formbuttonwrapper{
+            position: absolute;
+            bottom: -100px;
+            right: 0px;
+            margin-right:20px;
+        }
+        .heading1 img{
+            margin-right:20px;
+        }
+        input[type="text"]{
+            box-shadow:none;
+            -webkit-box-shadow:none;
+            -moz-box-shadow:none;
+            -webkit-appearance: none;
+        }
+        input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:focus {
+            border-color: #e15550;
+            color: #e15550;
+            box-shadow:none;
+            -webkit-box-shadow:none;
+            -moz-box-shadow:none;
+            -webkit-appearance: none;
+        }
+        textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
+            border-color: #58B334;
+            outline: 0;
+            box-shadow:none;
+            -webkit-box-shadow:none;
+            -moz-box-shadow:none;
+            -webkit-appearance: none;
+        }
+        .row{
+            text-align: center;
+        }
+        @media (max-width:1000px){
+            .hidden-phone{
+                display:none;
+            }
+            body{
+                min-width:320px;
+                min-height:600px;
+            }
+            .portrait{
+                width: 100%;
+                margin-top: 10px;
+                box-sizing: border-box;
+                height: 30px !important;
+                border:0px !important;
+            }
+            td{
+                border:0px !important;
+                padding-left:40px !important;
+            }
+            .grid{
+                width:100%;
+                margin:0px;
+            }
+            .grid .image img{
+                height:100%;
+                width:auto;
+                margin:auto;
+                display:block;
+            }
+            .heading1 img{
+                display:block;
+                margin:auto;
+                margin-bottom:20px;
+            }
+            .heading1{
+                text-align:center;
+            }
+            .formbuttonwrapper{
+                left:50%;
+                margin-left:-104px;
+                
+            }
+            .control-group{
+                margin: auto;
+                width: 285px;
+            }
+            .visible-phone{
+                display:block !important;
+            }
+            .heading1{
+                font-size:34px;
+            }
+            .searchheader{
+                width:100%;
+                margin:0px;
+                padding:0px;
+                background:#9B63D8;
+                height:50px;
+                box-sizing:border-box;
+                padding:0px 10px;
+                position:fixed;
+                top:50px;
+                left:0px;
+            }
+            .well {
+                padding: 40px 40px;
+            }
+        }
+        @media (max-width:720px){
+            .heading1{
+                font-size:26px;
+            }               
+        }
+        
+    </style>
+    <script type="text/javascript">
+        //Get configuration from environment variables (via heroku or localhost env)
+        var configFromEnv = {};
+        configFromEnv.client_id    = "<%= client_id %>";
+        configFromEnv.app_url = "<%= app_url %>";
+        configFromEnv.sessionId = "{!$API.session_Id}";
+    </script>
+        
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+
+    <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/forcetk.js')}"></script>
+    <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/angular-force.js')}"></script>
+    <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/init.js')}"></script>  -->
+    <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/app.js')}"></script>  -->
+    
+
+</head>
+<body>
+<div class="header">
+    <a onClick="window.location = '/apex/EventLead_Index';"><img id="icon" src="{!URLFOR($Resource.EventLeadResources,'/images/icon.png')}"/></a>
+    <a class="brand" href="#">Event Leads</a>
+    <!-- PJCTODO: add button to select new event -->
+    <!-- PJCTODO: DONE, added to EventLead_Home on plus button. add button to return to SFDC home/home.jsp -->
+</div>
+
+<div class="container">
+    <div class="ngView"></div>
+</div>
+
+<script type="text/javascript">
+// BEGIN init.js
+var app = angular.module('EventLeadVF', ['AngularForce', 'AngularForceObjectFactory', 'Event', 'Offer', 'Contact', 'Lead', 'CampaignMember']); //removed contact
+app.constant('SFConfig', getSFConfig());
+
+/**
+ * Configure all the AngularJS routes here.
+ */
+app.config(function ($routeProvider) {
+    $routeProvider.
+        when('/', {controller: HomeCtrl, templateUrl: 'apex/EventLead_Home'}).
+        when('/login', {controller: LoginCtrl, templateUrl: 'apex/EventLead_Login'}).
+        when('/offers', {controller: OfferListCtrl, templateUrl: 'apex/EventLead_Offer'}).
+        when('/contacts', {controller: ContactListCtrl, templateUrl: 'apex/EventLead_Contact'}).
+        when('/newContact', {controller: ContactCreateCtrl, templateUrl: 'apex/EventLead_NewContact'}).
+        when('/view/:offerId', {controller: OfferViewCtrl, templateUrl: 'apex/EventLead_ViewOffer'}).
+        when('/continue', {controller: ContinueCtrl, templateUrl: 'apex/EventLead_Continue'}).
+        otherwise({redirectTo: '/'});
+
+//        when('/continue', {controller: ContinueCtrl, templateUrl: 'apex/EventLead_Continue'}).
+
+
+/* removed
+        when('/edit/:contactId', { controller: ContactDetailCtrl, templateUrl: 'apex/MobileSample_AngularEdit'}).
+        when('/new', { controller: ContactCreateCtrl, templateUrl: 'apex/MobileSample_AngularDetail'}).
+        when('/view/:contactId', {controller: ContactViewCtrl, templateUrl: 'apex/MobileSample_AngularView'}).
+        when('/events', {controller: CampaignListCtrl, templateUrl: 'apex/EventLead_Event'}).
+*/
+
+});
+
+app.factory('ActiveEvent', function() {
+    //EventId: store the selected ID for the event
+    //EventName: Name for labeling and identity on pages
+    //EventBranding: NOT CURRENTLY IMPLEMENTED wish list to apply CSS for specific events so that selecting an event updates certain UI elements
+    //EventCampaignMemberIds: NOT IMPLEMENTED wish list item an array of IDs of contacts to pass into an IN clause when querying contacts
+    return {
+        EventId : '',
+        EventName : '',
+        EventBranding : '',
+        EventCampaignMembers : ''
+    };
+});
+
+app.factory('NewLeadService', function() {
+    return {
+        OfferId : '', 
+        FirstName : '',
+        LastName : '', 
+        Email : '',
+        Company : '',
+        LeadStatus : 'Open',
+        LeadSource : 'Trade Show',
+        AcceptedMbrStatus : 'Responded',
+        RejectedMbrStatus : 'Sent',
+        ContactId : '',
+        LeadId : ''
+    };
+});
+
+
+/**
+ * Please configure Salesforce consumerkey, proxyUrl etc in getSFConfig().
+ *
+ * SFConfig is a central configuration JS Object. It is used by angular-force.js and also your app to set and retrieve
+ * various configuration or authentication related information.
+ *
+ * Note: Please configure SFConfig Salesforce consumerkey, proxyUrl etc in getSFConfig() below.
+ *
+ * @property SFConfig Salesforce Config object with the following properties.
+ * @attribute {String} sfLoginURL       Salesforce login url
+ * @attribute {String} consumerKey      Salesforce app's consumer key
+ * @attribute {String} oAuthCallbackURL OAuth Callback URL. Note: If you are running on Heroku or elsewhere you need to set this.
+ * @attribute {String} proxyUrl         URL to proxy cross-domain calls. Note: This nodejs app acts as a proxy server as well at <location>/proxy/
+ * @attribute {String} client           ForcetkClient. Set by forcetk lib
+ * @attribute {String} sessionId        Session Id. Set by forcetk lib
+ * @attribute {String} apiVersion       REST Api version. Set by forcetk (Set this manually for visualforce)
+ * @attribute {String} instanceUrl      Your Org. specific url. Set by forcetk.
+ *
+ * @returns SFConfig object depending on where (localhost v/s heroku v/s visualforce) the app is running.
+ */
+function getSFConfig() {
+    var location = document.location;
+    var href = location.href;
+    if (href.indexOf('file:') >= 0) { //Phonegap 
+        return {};
+    } else {
+        if (configFromEnv.sessionId) {
+            return {
+                sessionId: configFromEnv.sessionId
+            }
+        } else {
+            if (!configFromEnv || configFromEnv.client_id == "" || configFromEnv.client_id == "undefined"
+                || configFromEnv.app_url == "" || configFromEnv.app_url == "undefined") {
+                throw 'Environment variable client_id and/or app_url is missing. Please set them before you start the app';
+            }
+            return {
+                sfLoginURL: 'https://login.salesforce.com/',
+                consumerKey: configFromEnv.client_id,
+                oAuthCallbackURL: removeTrailingSlash(configFromEnv.app_url) + '/#/callback',
+                proxyUrl: removeTrailingSlash(configFromEnv.app_url) + '/proxy/'
+            }
+        }
+    }
+}
+
+//Helper
+function removeTrailingSlash(url) {
+    return url.replace(/\/$/, "");
+}
+//END OF init.js
+
+// BEGIN app.js
+/**
+ * Describe Salesforce object to be used in the app. For example: Below AngularJS factory shows how to describe and
+ * create an 'Contact' object. And then set its type, fields, where-clause etc.
+ *
+ *  PS: This module is injected into ListCtrl, EditCtrl etc. controllers to further consume the object.
+ */
+
+angular.module('Contact', []).factory('Contact', function (AngularForceObjectFactory) {
+    //Describe the contact object
+    var objDesc = {
+        type: 'Contact',
+        fields: ['FirstName', 'LastName', 'Title', 'Phone', 'Email', 'Id', 'Account.Name'],
+        where: '',
+        orderBy: 'LastName',
+        limit: 20
+    };
+    var Contact = AngularForceObjectFactory(objDesc);
+
+    return Contact;
+});
+
+angular.module('Lead', []).factory('Lead', function (AngularForceObjectFactory) {
+    //Describe the Lead object
+    var objDesc = {
+        type: 'Lead',
+        fields: ['FirstName', 'Company', 'LastName', 'Title', 'Phone', 'Email', 'Id'],
+        where: '',
+        orderBy: 'LastName',
+        limit: 20
+    };
+    var Contact = AngularForceObjectFactory(objDesc);
+
+    return Contact;
+});
+   
+angular.module('Event', []).factory('Event', function (AngularForceObjectFactory) {
+               //TODO: Customize what consitutes an "Event" in the 'where' JSON element below. 
+               //Default is top level Campaigns only (ParentId = null) and the standard picklist value of 'Seminar / Conference'
+    var objDesc = {
+        type: 'Campaign',
+        fields: ['Id','Name', 'Description', 'StartDate', 'EndDate', 'Status', 'Type', 'NumberOfLeads', 'NumberOfContacts', 'NumberOfResponses', 'EventLead_ImageURL__c'],
+        where: 'Type = \'Seminar / Conference\' AND Status = \'In Progress\' AND ParentId = null',
+        orderBy: 'Name',
+        limit: 20
+    }
+    var Event = AngularForceObjectFactory(objDesc);
+  
+    return Event;
+});
+
+angular.module('Offer', []).factory('Offer', function (AngularForceObjectFactory) {
+    var objDesc = {
+        type: 'Campaign',
+        fields: ['Id','Name', 'Description', 'Parent.Name', 'Parent.EventLead_ImageURL__c', 'StartDate', 'EndDate', 'Status', 'Type', 'NumberOfLeads', 'NumberOfContacts', 'NumberOfResponses', 'EventLead_ImageURL__c'],
+        where: '', //this WHERE gets set at the selection of the event to the event's Campaign ID. for other WHERE filters, add to that where clause. 
+        orderBy: 'Name',
+        limit: 20
+    }
+    var Offer = AngularForceObjectFactory(objDesc);
+    
+    return Offer;
+});    
+
+angular.module('CampaignMember', []).factory('CampaignMember', function (AngularForceObjectFactory) {
+    //Describe the contact object
+    var objDesc = {
+        type: 'CampaignMember',
+        fields: ['Status', 'LeadId', 'Id', 'HasResponded', 'FirstRespondedDate', 'ContactId', 'CampaignId'],
+        where: '',
+        orderBy: '',
+        limit: 20
+    };
+    var CampaignMember = AngularForceObjectFactory(objDesc);
+
+    return CampaignMember;
+});
+
+function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
+
+    $scope.authenticated = AngularForce.authenticated();
+    if (!$scope.authenticated) {
+        if (AngularForce.inVisualforce) {
+            AngularForce.login();
+        } else {    
+            return $location.path('/login');
+        }
+    } else if (ActiveEvent.EventId) {
+        console.log('Event Id is: ' +ActiveEvent.EventId);
+        return $location.path('/offers');
+    }
+
+    Event.query(
+        function (data) {
+            $scope.events = data.records;
+            
+//          if ($scope.events.length > 0) {
+//              ActiveEvent.EventName = $scope.events[0].Parent.Name; 
+//          }
+            
+            $scope.$apply();//Required coz sfdc uses jquery.ajax
+        }, 
+        function (data) {
+            alert('Query Error');
+        }
+    );
+    
+    $scope.setCampaign = function(SelectedId) {
+        console.log("HomeCtrl set event campaign");
+        ActiveEvent.EventId = SelectedId; 
+        console.log(SelectedId); 
+        
+        //TODO: retrieve campaign name and branding: cache in ActiveEvent service
+        
+        $location.path('/offers');  
+        
+    }
+    
+    $scope.logout = function () {
+        AngularForce.logout();
+        $location.path('/login');
+    }
+}
+
+function LoginCtrl($scope, AngularForce, $location) {
+    $scope.login = function () {
+        AngularForce.login();
+    }
+
+    if (AngularForce.inVisualforce) {
+        AngularForce.login();
+        console.log("LoginCtrl just authenticated go to /");
+        $location.path('/');
+    }
+}
+
+function CallbackCtrl($scope, AngularForce, $location) {
+    AngularForce.oauthCallback(document.location.href);
+    $location.path('/contacts');
+}
+
+
+function OfferListCtrl($scope, AngularForce, $location, Offer, ActiveEvent, NewLeadService) {
+    $scope.authenticated = AngularForce.authenticated();
+    if (!$scope.authenticated) {
+        return $location.path('/login');
+    }
+    console.log('in OfferListCtrl');
+        
+    Offer.setNewWhere('ParentId = \'' + ActiveEvent.EventId + '\' AND Status = \'In Progress\'');
+    
+    Offer.query(function (data) {
+        $scope.offers = data.records;
+        $scope.$apply();//Required coz sfdc uses jquery.ajax
+    }, function (data) {
+        alert('Query Error');
+    });
+
+    $scope.isWorking = function () {
+        return $scope.working;
+    };
+
+    $scope.selectOffer = function (campaignId) {
+        console.log('NewLeadService offer: ' + NewLeadService.OfferId);
+        NewLeadService.OfferId = campaignId;
+        if (NewLeadService.LeadId) {
+            $location.path('/view/' + NewLeadService.OfferId);
+        } else {
+            $location.path('/contacts');
+        }
+    };
+
+}
+
+function ContactListCtrl($scope, AngularForce, $location, Contact, NewLeadService) {
+    $scope.authenticated = AngularForce.authenticated();
+    if (!$scope.authenticated) {
+        return $location.path('/login');
+    }
+
+    $scope.searchTerm = '';
+    $scope.working = false;
+    $scope.contacts = [];
+
+// removing...populate with no data initially
+//    Contact.query(function (data) {
+//        $scope.contacts = data.records;
+//        $scope.$apply();//Required coz sfdc uses jquery.ajax
+//    }, function (data) {
+//        alert('Query Error');
+//    });
+
+    $scope.isWorking = function () {
+        return $scope.working;
+    };
+
+//SOSL safe search: must include at least two characters for valid search
+    $scope.doSearch = function () {
+        if ($scope.searchTerm || $scope.searchTerm > 1) {
+            Contact.search($scope.searchTerm, function (data) {
+                $scope.contacts = data;
+                $scope.$apply();//Required coz sfdc uses jquery.ajax
+            }, function (data) {
+            });
+        } else {
+            $scope.contacts = [];
+        }
+    };
+
+    $scope.doView = function (contact) {
+  
+        NewLeadService.CompanyName = contact.Account.Name;
+        NewLeadService.FirstName = contact.FirstName;
+        NewLeadService.LastName = contact.LastName;
+        NewLeadService.Email = contact.Email;
+        NewLeadService.ContactId = contact.Id;
+
+        console.log('doView');
+        $location.path('/view/' + NewLeadService.OfferId);
+    };
+
+    $scope.doCreate = function () {
+        $location.path('/newContact');
+    }
+}
+
+function ContactCreateCtrl($scope, AngularForce, $location, Contact, NewLeadService, CampaignMember) {
+
+    $scope.save = function () {
+    
+        console.log('company name: ' + $scope.CompanyName);
+        console.log('first name: ' + $scope.contact.FirstName);
+        NewLeadService.CompanyName = $scope.CompanyName;
+        NewLeadService.FirstName = $scope.contact.FirstName;
+        NewLeadService.LastName = $scope.contact.LastName;
+        NewLeadService.Email = $scope.contact.Email;
+        NewLeadService.Phone = $scope.contact.Phone;
+        NewLeadService.Title = $scope.contact.Title;
+
+        Contact.save($scope.contact, function (contact) {
+            NewLeadService.ContactId = contact.Id;
+            $scope.$apply(function () {
+                $location.path('/view/' + NewLeadService.OfferId);
+            });
+        });
+    }
+}
+
+function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, NewLeadService, CampaignMember, Lead) {
+    $scope.authenticated = AngularForce.authenticated();
+    if (!$scope.authenticated) {
+        return $location.path('/login');
+    }
+    console.log('in OfferViewCtrl');
+
+    AngularForce.login(function () {
+        Offer.get({id: $routeParams.offerId}, function (offer) {
+            self.original = offer;
+            $scope.offer = new Offer(self.original);
+            $scope.$apply();//Required coz sfdc uses jquery.ajax
+        });
+    });
+    
+    $scope.newLead = {
+        FirstName : NewLeadService.FirstName,
+        LastName : NewLeadService.LastName, 
+        Company : NewLeadService.CompanyName,
+        Email : NewLeadService.Email,
+        Status : NewLeadService.LeadStatus,
+        LeadSource : NewLeadService.LeadSource,
+        Id : '' 
+    }
+    console.log($scope.newLead);
+    
+    $scope.cmpMember = {
+        ContactId : '', //currently not used - Lead campaign members indicate responses for this app
+        LeadId : '', //to be set after Lead is saved
+        CampaignId : NewLeadService.OfferId,
+        Status : '' //to be set when accepted or rejected
+    }
+    console.log($scope.cmpMember);
+    
+    $scope.acceptOffer = function() {
+    
+        Lead.save($scope.newLead, function (newLead) {
+            console.log(newLead);
+            $scope.cmpMember.LeadId = newLead.Id;
+            $scope.cmpMember.Status = NewLeadService.AcceptedMbrStatus;
+            NewLeadService.LeadId = newLead.Id;
+            
+            CampaignMember.save($scope.cmpMember, function (cmpMember) {
+                console.log('saved campaign member as: ' + cmpMember);
+                $scope.$apply(function () {
+                    $location.path('/continue');
+                });
+            });
+
+        });
+        
+        console.log(NewLeadService);
+
+    }
+    
+    $scope.rejectOffer = function() {
+        
+        Lead.save($scope.newLead, function (newLead) {
+            console.log(newLead);
+            $scope.cmpMember.LeadId = newLead.Id;
+            $scope.cmpMember.Status = NewLeadService.RejectedMbrStatus;
+            NewLeadService.LeadId = newLead.Id;
+            
+            CampaignMember.save($scope.cmpMember, function (cmpMember) {
+                console.log('saved campaign member as: ' + cmpMember);
+                $scope.$apply(function () {
+                    $location.path('/continue');
+                });
+            });
+
+        });
+        
+        console.log(NewLeadService);
+    }
+
+}
+
+//app.controller('ContinueCtrl', ['$scope','$location','AngularForce','NewLeadService',
+    function ContinueCtrl($scope, $location, AngularForce, NewLeadService){
+        $scope.authenticated = AngularForce.authenticated();
+        if (!$scope.authenticated) {
+            return $location.path('/login');
+        }
+        
+        $scope.keepLead = function(){
+            $location.path('/home');
+        }   
+        
+        $scope.clearLead = function(){
+            NewLeadService.LeadId = '';
+            NewLeadService.Company = '';
+            NewLeadService.FirstName = '';
+            NewLeadService.LastName = '';
+            NewLeadService.Email = '';
+            NewLeadService.Phone = '';
+            NewLeadService.Title = '';
+            $location.path('/home');
+        }
+    }
+//]);
+   
+//END OF app.js
+
+/*removed controllers
+function CampaignListCtrl($scope, AngularForce, $location, Event) {
+    $scope.authenticated = AngularForce.authenticated();
+    if (!$scope.authenticated) {
+        return $location.path('/login');
+    }
+
+    $scope.searchTerm = '';
+    $scope.working = false;
+
+    Event.query(function (data) {
+        $scope.campaigns = data.records;
+        $scope.$apply();//Required coz sfdc uses jquery.ajax
+    }, function (data) {
+        alert('Query Error');
+    });
+
+    $scope.isWorking = function () {
+        return $scope.working;
+    };
+
+    $scope.doSearch = function () {
+        Event.search($scope.searchTerm, function (data) {
+            $scope.campaigns = data;
+            $scope.$apply();//Required coz sfdc uses jquery.ajax
+        }, function (data) {
+        });
+    };
+
+    $scope.doView = function (campaignId) {
+        console.log('doView');
+        $location.path('/view/' + campaignId);
+    };
+
+    $scope.doCreate = function () {
+        $location.path('/new');
+    }
+}
+     
+function ContactDetailCtrl($scope, AngularForce, $location, $routeParams, Contact) {
+    var self = this;
+
+    if ($routeParams.contactId) {
+        AngularForce.login(function () {
+            Contact.get({id: $routeParams.contactId}, function (contact) {
+                self.original = contact;
+                $scope.contact = new Contact(self.original);
+                $scope.$apply();//Required coz sfdc uses jquery.ajax
+            });
+        });
+    } else {
+        $scope.contact = new Contact();
+        //$scope.$apply();
+    }
+
+    $scope.isClean = function () {
+        return angular.equals(self.original, $scope.contact);
+    }
+
+    $scope.destroy = function () {
+        self.original.destroy(
+            function () {
+                $scope.$apply(function () {
+                    $location.path('/contacts');
+                });
+            },
+            function(errors) {
+                alert("Could not delete contact!\n" + JSON.parse(errors.responseText)[0].message);
+            }
+        );
+    };
+
+    $scope.save = function () {
+        if ($scope.contact.Id) {
+            $scope.contact.update(function () {
+                $scope.$apply(function () {
+                    $location.path('/view/' + $scope.contact.Id);
+                });
+
+            });
+        } else {
+            Contact.save($scope.contact, function (contact) {
+                var p = contact;
+                $scope.$apply(function () {
+                    $location.path('/view/' + p.id);
+                });
+            });
+        }
+    };
+
+    $scope.doCancel = function () {
+        if ($scope.contact.Id) {
+            $location.path('/view/' + $scope.contact.Id);
+        } else {
+            $location.path('/contacts');
+        }
+    }
+}
+
+//alternate controller syntax...didn't work. need to explore more!
+app.controller('OfferListCtrl',function($scope, AngularForce, $location, Offer, ActiveEvent, NewLeadService) {
+    $scope.authenticated = AngularForce.authenticated();
+    if (!$scope.authenticated) {
+        return $location.path('/login');
+    }
+    console.log('in OfferListCtrl');
+    
+    console.log(Object.keys(Offer));
+    console.log(Object.keys(AngularForce));
+    console.log(Object.keys($scope));
+    console.log('App: ' + Object.keys(app));
+    console.log('App: ' + Object.keys(app.factory));
+    console.log('App: ' + Object.keys(app.service));
+    console.log('App: ' + Object.keys(app.controller));
+    
+    
+    Offer.query(function (data) {
+        $scope.offers = data.records;
+        $scope.$apply();//Required coz sfdc uses jquery.ajax
+    }, function (data) {
+        alert('Query Error');
+    });
+
+    $scope.isWorking = function () {
+        return $scope.working;
+    };
+
+    $scope.doView = function (campaignId) {
+        console.log('doView');
+        NewLeadService.OfferId = campaignId;
+        $location.path('/contacts');
+    };
+
+})
+
+*/
+
+</script>
+</body>
+</html>
+</apex:page>

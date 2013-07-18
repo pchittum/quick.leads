@@ -1,0 +1,11 @@
+# don't need these
+
+.settings/
+salesforce.schema
+
+# OS generated files
+
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
