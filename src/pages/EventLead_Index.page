@@ -5,7 +5,17 @@
     <title>Event Leads</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
+<!-- for prototyping and playing with CSS -->
 	<link href="{!URLFOR($Resource.EventLeadResources,'/style/style.css')}" rel="stylesheet" />
+<!-- 
+	Keeping the following internal CSS in the page for the purpose of future prototyping 
+	and customization of this app. 
+	
+	To use this uncomment the style tag below. 
+	
+	Any changes to the CSS below should ideally be wrapped back into the EventLeadResources static
+	resource for production purposes. 
+ -->
 <!-- 
     <style>
         a, html, body, div, button{
