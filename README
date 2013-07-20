@@ -1,0 +1,14 @@
+Mobile Event Lead App for Force.com
+
+Typically collecting a lead from an event, converence, or expo is simply scanning a badge which gets stuck in a list of hundreds of leads without any context as to the nature of the converstaion.
+
+Event lead uses Salesforce Campaigns to create a set of offers that can record the specific interest or product that a customer inquired about.
+
+The event is represented by a top level campaign of type Seminar/Conference that is Active and with a Status of "In Progress"
+
+Child campaigns (with Status of "In Progress") in the campaign hierarchy represent the individual offers or topics that you are tracking for the event.
+
+Wish list:
+- Embed video content in in View Offer page
+- Event-specific branding (beyond just an image)
+- Mobile analytics for campaign results and lead gen statistics
