@@ -3,11 +3,11 @@ a, html, body, div, button{
 }
 @font-face{
 	font-family: opensans;
-	src: url('/style/fonts/OpenSans-Light.ttf');
+	src: url('./fonts/OpenSans-Light.ttf');
 }
 @font-face{
 	font-family: opensansr;
-	src: url('/style/fonts/OpenSans.ttf');
+	src: url('./fonts/OpenSans.ttf');
 }
 body{
 	min-width:1024px;

@@ -5,8 +5,8 @@
     <title>Event Leads</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
-	<!--<link href="{!URLFOR($Resource.EventLeadResources,'/style/style.css')}" rel="stylesheet" />-->
- 
+	<link href="{!URLFOR($Resource.EventLeadResources,'/style/style.css')}" rel="stylesheet" />
+<!-- 
     <style>
         a, html, body, div, button{
             -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
@@ -328,7 +328,7 @@
         }
         
     </style>
- 
+ -->
     <script type="text/javascript">
         //Get configuration from environment variables (via heroku or localhost env)
         var configFromEnv = {};
