@@ -350,8 +350,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 
-    <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/forcetk.js')}"></script>
-    <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/angular-force.js')}"></script>
+    <script src="{!URLFOR($Resource.EventLeadResources, 'js/forcetk.js')}"></script>
+    <script src="{!URLFOR($Resource.EventLeadResources, 'js/angular-force.js')}"></script>
     <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/init.js')}"></script>  -->
     <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/app.js')}"></script>  -->
     
