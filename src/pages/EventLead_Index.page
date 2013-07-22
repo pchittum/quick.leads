@@ -723,11 +723,11 @@ function ContactListCtrl($scope, AngularForce, $location, Lead, NewLeadService, 
 
     $scope.doView = function (contact) {
   
-        NewLeadService.CompanyName = contact.Account.Name;
+        NewLeadService.CompanyName = contact.Company;
         NewLeadService.FirstName = contact.FirstName;
         NewLeadService.LastName = contact.LastName;
         NewLeadService.Email = contact.Email;
-        NewLeadService.ContactId = contact.Id;
+        NewLeadService.LeadId = contact.Id;
 
         console.log('doView');
         $location.path('/view/' + NewLeadService.OfferId);
@@ -824,6 +824,11 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
             $scope.$apply(function () {
                 $location.path('/continue');
             });
+        }, function(err){
+        	console.log('error on save' + err)
+            $scope.$apply(function () {
+                $location.path('/continue');
+            });
         });
     
     	console.log(NewLeadService);
@@ -836,6 +841,11 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
         
         CampaignMember.save($scope.cmpMember, function (cmpMember) {
             console.log('saved campaign member as: ' + cmpMember);
+            $scope.$apply(function () {
+                $location.path('/continue');
+            });
+        }, function(err){
+        	console.log('error on save' + err)
             $scope.$apply(function () {
                 $location.path('/continue');
             });

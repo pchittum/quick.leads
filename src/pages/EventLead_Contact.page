@@ -36,7 +36,7 @@
                 <!--<tr ng-repeat="contact in contacts" ng-click="doView(contact)" onClick="window.location = '#/view/{{contact.Id}}'">-->
                 <tr ng-repeat="contact in contacts" ng-click="doView(contact)">
                     <td>{{contact.FirstName}} {{contact.LastName}}</td>
-                    <td>{{contact.Account.Name}}</td>
+                    <td>{{contact.Company}}</td>
                     <td class='hidden-phone'>{{contact.Title}}</td>
                     <td>{{contact.Phone}}</td>
                     <td class='hidden-phone'>{{contact.Email}}</td>

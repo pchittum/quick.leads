@@ -8,6 +8,9 @@ The event is represented by a top level campaign of type Seminar/Conference that
 
 Child campaigns (with Status of "In Progress") in the campaign hierarchy represent the individual offers or topics that you are tracking for the event.
 
+Bugs
+- Need to reconcile that Lead can only be a CampaignMember of a give campaign once. No duplicates allowed. My bandaid is to just get out on error, but I need to put some proper error checking all over, and see about some kind of validation where if someone is a lead attached to one of the campaigns we show it or prevent that route.
+
 Wish list:
 - Embed video content in in View Offer page
 - Event-specific branding (beyond just an image)
