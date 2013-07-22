@@ -339,6 +339,7 @@
         
     </style>
  -->
+    <!-- relic from mobile pack application. not used in Visualforce, but I'll keep this here for now -->
     <script type="text/javascript">
         //Get configuration from environment variables (via heroku or localhost env)
         var configFromEnv = {};
@@ -569,9 +570,9 @@ angular.module('CampaignMember', []).factory('CampaignMember', function (Angular
     return CampaignMember;
 });
 
-/**
- * Controller for EventLead_Home partial
- */
+//**
+// * Controller for EventLead_Home partial
+// */
 
 function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
 
@@ -621,9 +622,9 @@ function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
     }
 }
 
-/**
- * Controller for Login page controller. Not used typically for VF app
- */
+//**
+// * Controller for Login page controller. Not used typically for VF app
+// */
 
 function LoginCtrl($scope, AngularForce, $location) {
     $scope.login = function () {
@@ -643,9 +644,9 @@ function CallbackCtrl($scope, AngularForce, $location) {
     $location.path('/home');
 }
 
-/**
- * Controller for EventLead_Offer partial. Present a list of child campaigns of our Event campaign. Implements actions for selecting an offer. 
- */
+//**
+// * Controller for EventLead_Offer partial. Present a list of child campaigns of our Event campaign. Implements actions for selecting an offer. 
+// */
 
 
 function OfferListCtrl($scope, AngularForce, $location, Offer, ActiveEvent, NewLeadService) {
@@ -680,9 +681,9 @@ function OfferListCtrl($scope, AngularForce, $location, Offer, ActiveEvent, NewL
 
 }
 
-/**
- * Controller for EventLead_Contact partial. Present a list of contacts. Implements actions for selecting an offer. 
- */
+//**
+// * Controller for EventLead_Contact partial. Present a list of contacts. Implements actions for selecting an offer. 
+// */
 
 function ContactListCtrl($scope, AngularForce, $location, Contact, NewLeadService) {
     $scope.authenticated = AngularForce.authenticated();
@@ -736,23 +737,43 @@ function ContactListCtrl($scope, AngularForce, $location, Contact, NewLeadServic
     }
 }
 
-function ContactCreateCtrl($scope, AngularForce, $location, Contact, NewLeadService, CampaignMember) {
+//says "Contact" but really is a lead
+//initially I was using contacts for everything
+function ContactCreateCtrl($scope, AngularForce, $location, Lead, NewLeadService, CampaignMember, ActiveEvent) {
+
+    $scope.cmpMember = {
+        ContactId : '', 
+        LeadId : '', 
+        CampaignId : ActiveEvent.EventId, 
+        Status : 'Attendee' 
+    }
 
     $scope.save = function () {
     
-        console.log('company name: ' + $scope.CompanyName);
+        console.log('company name: ' + $scope.contact.CompanyName);
         console.log('first name: ' + $scope.contact.FirstName);
-        NewLeadService.CompanyName = $scope.CompanyName;
+        
+        //PJCTODO: might dispense with below. by creating lead here holding lead state probably is irrelevant
+        NewLeadService.CompanyName = $scope.contact.Company;
         NewLeadService.FirstName = $scope.contact.FirstName;
         NewLeadService.LastName = $scope.contact.LastName;
         NewLeadService.Email = $scope.contact.Email;
         NewLeadService.Phone = $scope.contact.Phone;
         NewLeadService.Title = $scope.contact.Title;
 
-        Contact.save($scope.contact, function (contact) {
-            NewLeadService.ContactId = contact.Id;
-            $scope.$apply(function () {
-                $location.path('/view/' + NewLeadService.OfferId);
+        Lead.save($scope.contact, function (contact) {
+        	console.log('callback on new lead save.');
+            NewLeadService.LeadId = contact.Id;
+            $scope.cmpMember.LeadId = contact.Id;
+            
+            console.log('cmp member: ');
+            console.log($scope.cmpMember);
+            
+            CampaignMember.save($scope.cmpMember, function (cmpMember){     
+            	console.log('saved campaign member as: ' + cmpMember);      
+	            $scope.$apply(function () {            
+	                $location.path('/view/' + NewLeadService.OfferId);
+	            });
             });
         });
     }
@@ -773,6 +794,7 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
         });
     });
     
+    //PJCTODO: Clean Up once lead is the single point of truth
     $scope.newLead = {
         FirstName : NewLeadService.FirstName,
         LastName : NewLeadService.LastName, 
@@ -786,7 +808,7 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
     
     $scope.cmpMember = {
         ContactId : '', //currently not used - Lead campaign members indicate responses for this app
-        LeadId : '', //to be set after Lead is saved
+        LeadId : NewLeadService.LeadId, 
         CampaignId : NewLeadService.OfferId,
         Status : '' //to be set when accepted or rejected
     }
@@ -794,43 +816,32 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
     
     $scope.acceptOffer = function() {
     
-        Lead.save($scope.newLead, function (newLead) {
-            console.log(newLead);
-            $scope.cmpMember.LeadId = newLead.Id;
-            $scope.cmpMember.Status = NewLeadService.AcceptedMbrStatus;
-            NewLeadService.LeadId = newLead.Id;
-            
-            CampaignMember.save($scope.cmpMember, function (cmpMember) {
-                console.log('saved campaign member as: ' + cmpMember);
-                $scope.$apply(function () {
-                    $location.path('/continue');
-                });
-            });
-
-        });
+        $scope.cmpMember.Status = NewLeadService.AcceptedMbrStatus;
         
-        console.log(NewLeadService);
+        CampaignMember.save($scope.cmpMember, function (cmpMember) {
+            console.log('saved campaign member as: ' + cmpMember);
+            $scope.$apply(function () {
+                $location.path('/continue');
+            });
+        });
+    
+    	console.log(NewLeadService);
 
     }
     
     $scope.rejectOffer = function() {
+    
+        $scope.cmpMember.Status = NewLeadService.RejectedMbrStatus;
         
-        Lead.save($scope.newLead, function (newLead) {
-            console.log(newLead);
-            $scope.cmpMember.LeadId = newLead.Id;
-            $scope.cmpMember.Status = NewLeadService.RejectedMbrStatus;
-            NewLeadService.LeadId = newLead.Id;
-            
-            CampaignMember.save($scope.cmpMember, function (cmpMember) {
-                console.log('saved campaign member as: ' + cmpMember);
-                $scope.$apply(function () {
-                    $location.path('/continue');
-                });
+        CampaignMember.save($scope.cmpMember, function (cmpMember) {
+            console.log('saved campaign member as: ' + cmpMember);
+            $scope.$apply(function () {
+                $location.path('/continue');
             });
-
         });
-        
-        console.log(NewLeadService);
+    
+    	console.log(NewLeadService);
+
     }
 
 }

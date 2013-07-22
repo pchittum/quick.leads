@@ -26,8 +26,8 @@
 
     <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/forcetk.js')}"></script>
     <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/angular-force.js')}"></script>
-    <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/init.js')}"></script>  -->
-    <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/app.js')}"></script>  -->
+    <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/init.js')}"></script>
+    <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/app.js')}"></script> 
     
 
 </head>
@@ -42,7 +42,7 @@
 <div class="container">
     <div class="ngView"></div>
 </div>
-
+<!-- 
 <script type="text/javascript">
 // BEGIN init.js
 var app = angular.module('AngularSFDemo', ['AngularForce', 'AngularForceObjectFactory', 'Contact', 'ParentCampaign']);
@@ -355,6 +355,7 @@ function ContactDetailCtrl($scope, AngularForce, $location, $routeParams, Contac
 }
 //END OF app.js
 </script>
+ -->
 </body>
 </html>
 </apex:page>

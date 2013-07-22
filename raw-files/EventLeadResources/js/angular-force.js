@@ -172,13 +172,17 @@ angular.module('AngularForceObjectFactory', []).factory('AngularForceObjectFacto
         var constructSOQL = function () {
         	return 'SELECT ' + fields + ' FROM ' + type + where + orderBy + limit;
         }
+        
+        var constructSOSLWithPlaceholder = function () {
+        	return 'Find {__SEARCH_TERM_PLACEHOLDER__*} IN ALL FIELDS RETURNING ' + type + ' (' + fields + where +')';
+        }
 
         //Construct SOQL
         var soql = constructSOQL();
 
         //Construct SOSL
         // Note: "__SEARCH_TERM_PLACEHOLDER__" will be replaced by actual search query just before making that query
-        var sosl = 'Find {__SEARCH_TERM_PLACEHOLDER__*} IN ALL FIELDS RETURNING ' + type + ' (' + fields + ')';
+        var sosl = constructSOSLWithPlaceholder();
 
         /**
          * AngularForceObject acts like a super-class for actual SF Objects. It provides wrapper to forcetk ajax apis
@@ -270,12 +274,15 @@ angular.module('AngularForceObjectFactory', []).factory('AngularForceObjectFacto
          ************************************/
          
          //added for managing query changes mid-stream
+         //updates where clause for both SOQL and SOSL based searches
         AngularForceObject.setNewWhere = function (whr) {
         	console.log('removing where clause: ' +where);
         	where = whr && whr != '' ? ' where ' + whr : '';; 
         	soql = constructSOQL();
+        	sosl = constructSOSLWithPlaceholder();
         	console.log('new where is: ' +where); 
         	console.log('query is: ' +soql); 
+        	console.log('search is: ' +sosl);
         } 
          
         AngularForceObject.getChangedData = function (obj) {

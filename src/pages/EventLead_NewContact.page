@@ -23,7 +23,7 @@
         </div>
         <div class="formsection">
             <label>Company Name</label>
-            <input type="text" name="CompanyName" ng-model="CompanyName" required="true" />
+            <input type="text" name="Company" ng-model="contact.Company" required="true" />
             <span ng-show="myForm.CompanyName.$error.required" class="help-inline">
             *</span>
         </div>
