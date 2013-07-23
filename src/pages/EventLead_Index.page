@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
 <!-- for prototyping and playing with CSS -->
-	<link href="{!URLFOR($Resource.EventLeadResources,'/style/style.css')}" rel="stylesheet" />
+    <link href="{!URLFOR($Resource.EventLeadResources,'/style/style.css')}" rel="stylesheet" />
 <!-- 
-	Keeping the following internal CSS in the page for the purpose of future prototyping 
-	and customization of this app. 
-	
-	To use this uncomment the style tag below. 
-	
-	Any changes to the CSS below should ideally be wrapped back into the EventLeadResources static
-	resource for production purposes. 
+    Keeping the following internal CSS in the page for the purpose of future prototyping 
+    and customization of this app. 
+    
+    To use this uncomment the style tag below. 
+    
+    Any changes to the CSS below should ideally be wrapped back into the EventLeadResources static
+    resource for production purposes. 
  -->
 <!-- 
     <style>
@@ -580,53 +580,53 @@ angular.module('CampaignMember', []).factory('CampaignMember', function (Angular
 // */
 
 //app.controller('HomeCtrl', ['$scope', 'AngularForce', '$location', '$route', 'Event', 'ActiveEvent',
-	function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
-	
-	    $scope.authenticated = AngularForce.authenticated();
-	    if (!$scope.authenticated) {
-	        if (AngularForce.inVisualforce) {
-	            AngularForce.login();
-	        } else {    
-	            return $location.path('/login');
-	        }
-	    } else if (ActiveEvent.EventId) {
-	        console.log('Event Id is: ' +ActiveEvent.EventId);
-	        return $location.path('/offers');
-	    }
-		
-		//TODO: not implemented currently
-		//at some point this will likely come up for larger organizations where there might be many active event-type campaigns
-	    Event.query(
-	        function (data) {
-	            $scope.events = data.records;
-	            
-	//          if ($scope.events.length > 0) {
-	//              ActiveEvent.EventName = $scope.events[0].Parent.Name; 
-	//          }
-	            
-	            $scope.$apply();//Required coz sfdc uses jquery.ajax
-	        }, 
-	        function (data) {
-	            alert('Query Error');
-	        }
-	    );
-	    
-	    $scope.setCampaign = function(SelectedId) {
-	        console.log("HomeCtrl set event campaign");
-	        ActiveEvent.EventId = SelectedId; 
-	        console.log(SelectedId); 
-	        
-	        //TODO: retrieve campaign name and branding: cache in ActiveEvent service
-	        
-	        $location.path('/offers');  
-	        
-	    }
-	    
-	    $scope.logout = function () {
-	        AngularForce.logout();
-	        $location.path('/login');
-	    }
-	}
+    function HomeCtrl($scope, AngularForce, $location, $route, Event, ActiveEvent) {
+    
+        $scope.authenticated = AngularForce.authenticated();
+        if (!$scope.authenticated) {
+            if (AngularForce.inVisualforce) {
+                AngularForce.login();
+            } else {    
+                return $location.path('/login');
+            }
+        } else if (ActiveEvent.EventId) {
+            console.log('Event Id is: ' +ActiveEvent.EventId);
+            return $location.path('/offers');
+        }
+        
+        //TODO: not implemented currently
+        //at some point this will likely come up for larger organizations where there might be many active event-type campaigns
+        Event.query(
+            function (data) {
+                $scope.events = data.records;
+                
+    //          if ($scope.events.length > 0) {
+    //              ActiveEvent.EventName = $scope.events[0].Parent.Name; 
+    //          }
+                
+                $scope.$apply();//Required coz sfdc uses jquery.ajax
+            }, 
+            function (data) {
+                alert('Query Error');
+            }
+        );
+        
+        $scope.setCampaign = function(SelectedId) {
+            console.log("HomeCtrl set event campaign");
+            ActiveEvent.EventId = SelectedId; 
+            console.log(SelectedId); 
+            
+            //TODO: retrieve campaign name and branding: cache in ActiveEvent service
+            
+            $location.path('/offers');  
+            
+        }
+        
+        $scope.logout = function () {
+            AngularForce.logout();
+            $location.path('/login');
+        }
+    }
 //]);
 //**
 // * Controller for Login page controller. Not used typically for VF app
@@ -701,9 +701,9 @@ function ContactListCtrl($scope, AngularForce, $location, Lead, NewLeadService, 
     $scope.searchTerm = '';
     $scope.working = false;
     $scope.contacts = [];
-	
-	//PJCTODO: must consider moving this to the time of selection instead of here
-	Lead.setNewWhere('Id in (SELECT LeadId FROM CampaignMember WHERE CampaignId = \'' + ActiveEvent.EventId + '\')');
+    
+    //PJCTODO: must consider moving this to the time of selection instead of here
+    Lead.setNewWhere('Id in (SELECT LeadId FROM CampaignMember WHERE CampaignId = \'' + ActiveEvent.EventId + '\')');
 
     $scope.isWorking = function () {
         return $scope.working;
@@ -764,7 +764,7 @@ function ContactCreateCtrl($scope, AngularForce, $location, Lead, NewLeadService
         NewLeadService.Title = $scope.contact.Title;
 
         Lead.save($scope.contact, function (contact) {
-        	console.log('callback on new lead save.');
+            console.log('callback on new lead save.');
             NewLeadService.LeadId = contact.Id;
             $scope.cmpMember.LeadId = contact.Id;
             
@@ -772,10 +772,10 @@ function ContactCreateCtrl($scope, AngularForce, $location, Lead, NewLeadService
             console.log($scope.cmpMember);
             
             CampaignMember.save($scope.cmpMember, function (cmpMember){     
-            	console.log('saved campaign member as: ' + cmpMember);      
-	            $scope.$apply(function () {            
-	                $location.path('/view/' + NewLeadService.OfferId);
-	            });
+                console.log('saved campaign member as: ' + cmpMember);      
+                $scope.$apply(function () {            
+                    $location.path('/view/' + NewLeadService.OfferId);
+                });
             });
         });
     }
@@ -826,13 +826,13 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
                 $location.path('/continue');
             });
         }, function(err){
-        	console.log('error on save' + err)
+            console.log('error on save' + err)
             $scope.$apply(function () {
                 $location.path('/continue');
             });
         });
     
-    	console.log(NewLeadService);
+        console.log(NewLeadService);
 
     }
     
@@ -846,13 +846,13 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
                 $location.path('/continue');
             });
         }, function(err){
-        	console.log('error on save' + err)
+            console.log('error on save' + err)
             $scope.$apply(function () {
                 $location.path('/continue');
             });
         });
     
-    	console.log(NewLeadService);
+        console.log(NewLeadService);
 
     }
 

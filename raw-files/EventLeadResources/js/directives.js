@@ -1,0 +1,1 @@
+//no directives, but again, plan to investigate ways to leverage this Angular feature
