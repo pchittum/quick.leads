@@ -701,7 +701,8 @@ function ContactListCtrl($scope, AngularForce, $location, Lead, NewLeadService, 
     $scope.searchTerm = '';
     $scope.working = false;
     $scope.contacts = [];
-
+	
+	//PJCTODO: must consider moving this to the time of selection instead of here
 	Lead.setNewWhere('Id in (SELECT LeadId FROM CampaignMember WHERE CampaignId = \'' + ActiveEvent.EventId + '\')');
 
     $scope.isWorking = function () {

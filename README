@@ -15,3 +15,11 @@ Wish list:
 - Embed video content in in View Offer page
 - Event-specific branding (beyond just an image)
 - Mobile analytics for campaign results and lead gen statistics
+
+TODO:
+- clean up inline JS and create static resources
+- clean up TODO's
+- test deploy to clean DE
+- test deploy to Event App
+- Compile list of declarative stuff (workflows and such)
+- Cleanup FDC project, remove all extra items from file system, update package.xml to correct scope
