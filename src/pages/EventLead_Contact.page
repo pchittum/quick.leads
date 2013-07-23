@@ -14,7 +14,7 @@
     <!-- This div is only displayed in desktops (see below for mobile phones)-->
     <div class="hidden-phone">
         <div class="heading1">
-            Find or Create a Contact
+            Find or Create (+) a Contact
             <input type="text" ng-model="searchTerm" ng-change="doSearch()" class="search-query" placeholder="Enter Search Criteria" />
         </div>
         <a href="#/newContact" class="addbutton"><img class="plus" src="{!URLFOR($Resource.EventLeadResources,'/images/plus.png')}"/></a>

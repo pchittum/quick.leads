@@ -353,10 +353,21 @@
 
     <script src="{!URLFOR($Resource.EventLeadResources, 'js/forcetk.js')}"></script>
     <script src="{!URLFOR($Resource.EventLeadResources, 'js/angular-force.js')}"></script>
-    <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/init.js')}"></script>  -->
-    <!-- <script src="{!URLFOR($Resource.MobileSample_Resources_Angular, 'resources/js/app.js')}"></script>  -->
-    
+    <script src="{!URLFOR($Resource.EventLeadResources, 'js/app.js')}"></script>
+    <script src="{!URLFOR($Resource.EventLeadResources, 'js/services.js')}"></script>
+    <script src="{!URLFOR($Resource.EventLeadResources, 'js/controllers.js')}"></script>
+    <script src="{!URLFOR($Resource.EventLeadResources, 'js/directives.js')}"></script>
+    <script src="{!URLFOR($Resource.EventLeadResources, 'js/filters.js')}"></script>
 
+
+<!-- Raja's cool trick working on static files on local web server -->
+<!-- 
+    <script src="http://localhost:3000/EventLead/js/app.js"></script>
+    <script src="http://localhost:3000/EventLead/js/services.js"></script>
+    <script src="http://localhost:3000/EventLead/js/controllers.js"></script>
+    <script src="http://localhost:3000/EventLead/js/directives.js"></script>
+    <script src="http://localhost:3000/EventLead/js/filters.js"></script>
+-->
 </head>
 <body>
 <div class="header">
@@ -368,6 +379,7 @@
     <div class="ngView"></div>
 </div>
 
+<!-- 
 <script type="text/javascript">
 // BEGIN app.js
 var app = angular.module('EventLeadVF', ['AngularForce', 'AngularForceObjectFactory', 'Event', 'Offer', 'Contact', 'Lead', 'CampaignMember']); //removed contact
@@ -885,6 +897,7 @@ function OfferViewCtrl($scope, AngularForce, $location, $routeParams, Offer, New
 //END controllers.js
 
 </script>
+ -->
 </body>
 </html>
 </apex:page>

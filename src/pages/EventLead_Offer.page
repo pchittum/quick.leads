@@ -8,17 +8,8 @@
     <div class="hidden-phone">
          <div class="heading1">
              <img ng-src="{{offers[0].Parent.EventLead_ImageURL__c}}"/>
-             Welcome to your event {{offers[0].Parent.Name}}
+             <div ng-show="offers && offers.length > 0">Welcome to {{offers[0].Parent.Name}}</div>
          </div>
-        
-        <!-- 
-            <div style="margin-bottom: 10px;">
-                <input type="text" ng-model="searchTerm" class="search-query" placeholder="Search" />
-
-                <p class="btn btn-primary" ng-click="doSearch(searchString)">Go</p>
-            </div>
-        -->
-       
         <div class="gridwrapper" >
             <div class="grid" ng-repeat="campaign in offers" ng-click="selectOffer(campaign.Id)">   
                 <div class="image">
@@ -28,28 +19,9 @@
                     {{campaign.Name}}
                 </div>
             </div>
-                
-                    <!--<td><button class="btn btn-small" ng-click="selectOffer(campaign.Id)">Select</button></td>
-                    <td class='hidden-phone'>{{campaign.Id}}</td>
-                    <td><a href="#/contacts">{{campaign.Name}}</a></td>
-                    <td class='hidden-phone'>{{campaign.Description}}</td>
-                    <td class='hidden-phone'>{{campaign.Type}}</td>
-                    <td>{{campaign.Status}}</td>
-                    <td>{{campaign.StartDate}}</td>
-                    <td class='hidden-phone'>{{campaign.EndDate}}</td>
-                    <td>{{campaign.NumberOfResponses}}</td>
-                    <td class='hidden-phone'>{{campaign.NumberOfContacts}}</td>
-                    <td class='hidden-phone'>{{campaign.NumberOfLeads}}</td>-->
-                
         </div>
     </div>
-    
-    <!-- doesn't have to be a button necessarily, but want to have a way to get out of the event. haven't added this to the controller yet, just a UI placeholder for now -->
-    <!-- Nick Edit - Added /apex/EventLead_Index link to the cloud icon on the top left of header bar. Think of it as a home button. -->
-    <!-- <div>
-        <button>Change Event</button>
-    </div> -->
-    
+
     <!-- This div is only displayed in mobile phones (see above for desktops) -->
     <div class="visible-phone">
          <div class="heading1">
@@ -67,23 +39,6 @@
             </div>
          </div>   
          
-        <!-- 
-        <form class="form-inline">
-            <input type="text" ng-model="searchTerm" class="input-medium search-query" placeholder="Search" />
-            <button ng-click="doSearch(searchString)" class="btn btn-primary">Go</button>
-            <button ng-click="doCreate()" class="btn btn-default">&nbsp;+&nbsp;</button>
-        </form>
-         
-         
-        <table class="table">
-            <tr ng-click="selectOffer(campaign.Id)" ng-repeat="campaign in offers">
-                <td><b class="fullname">{{campaign.Name}}</b>
-                    <br />
-                    <small class="metadata">{{campaign.StartDate}}</small>
-                </td>
-                <td><i class="icon-chevron-right"></i></td>
-            </tr>
-        </table>-->
     </div>
 </div>    
 </apex:page>

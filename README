@@ -10,16 +10,18 @@ Child campaigns (with Status of "In Progress") in the campaign hierarchy represe
 
 Bugs
 - Need to reconcile that Lead can only be a CampaignMember of a give campaign once. No duplicates allowed. My bandaid is to just get out on error, but I need to put some proper error checking all over, and see about some kind of validation where if someone is a lead attached to one of the campaigns we show it or prevent that route.
+- API optimization. My nifty onchange search bleeds API calls like a hemophiliac on a bed of nails. Will either do a single pull of parent campaign members on init of contacts page, or a button-based search. If I do a pre-load, I need to figure out how to initially display none and then show once the filter is used. 
 
 Wish list:
 - Embed video content in in View Offer page
 - Event-specific branding (beyond just an image)
 - Mobile analytics for campaign results and lead gen statistics
+- Update responsive CSS for phone and cleanup the offer background
 
 TODO:
-- clean up inline JS and create static resources
+- DONE clean up inline JS and create static resources
 - clean up TODO's
 - test deploy to clean DE
-- test deploy to Event App
+- test deploy to Event Org
 - Compile list of declarative stuff (workflows and such)
 - Cleanup FDC project, remove all extra items from file system, update package.xml to correct scope
