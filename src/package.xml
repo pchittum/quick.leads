@@ -1,40 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
-        <name>ApexClass</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>EventLead_Confirm</members>
+        <members>EventLead_Contact</members>
+        <members>EventLead_Continue</members>
+        <members>EventLead_Home</members>
+        <members>EventLead_Index</members>
+        <members>EventLead_Login</members>
+        <members>EventLead_NewContact</members>
+        <members>EventLead_Offer</members>
+        <members>EventLead_ViewOffer</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
-    </types>
-    <types>
-        <members>Angular_Mobile_Pack</members>
+        <members>Event_Leads</members>
         <name>CustomApplication</name>
     </types>
     <types>
-        <members>Job_Application__c</members>
-        <members>Offer__c</members>
-        <name>CustomObject</name>
+        <members>Campaign.EventLead_ImageURL__c</members>
+        <name>CustomField</name>
     </types>
     <types>
-        <members>Angular_Contacts</members>
+        <members>Event_Leads</members>
         <name>CustomTab</name>
     </types>
     <types>
-        <members>Package/AngularIcon.png</members>
-        <name>Document</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>EventLeadResources</members>
         <name>StaticResource</name>
     </types>
     <version>27.0</version>

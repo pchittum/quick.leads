@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>EventLead_ImageURL__c</fullName>
+        <description>URL for EventLead mobile app</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Add a URL for when this Campaign represents an offer in the EventLead mobile application.</inlineHelpText>
+        <label>EventLead_ImageURL</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+</CustomObject>
