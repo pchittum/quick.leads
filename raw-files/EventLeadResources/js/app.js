@@ -7,13 +7,13 @@ app.constant('SFConfig', getSFConfig());
  */
 app.config(function ($routeProvider) {
     $routeProvider.
-        when('/', {controller: HomeCtrl, templateUrl: 'apex/EventLead_Home'}).
-        when('/login', {controller: LoginCtrl, templateUrl: 'apex/EventLead_Login'}).
-        when('/offers', {controller: OfferListCtrl, templateUrl: 'apex/EventLead_Offer'}).
-        when('/contacts', {controller: ContactListCtrl, templateUrl: 'apex/EventLead_Contact'}).
-        when('/newContact', {controller: ContactCreateCtrl, templateUrl: 'apex/EventLead_NewContact'}).
-        when('/view/:offerId', {controller: OfferViewCtrl, templateUrl: 'apex/EventLead_ViewOffer'}).
-        when('/continue', {controller: ContinueCtrl, templateUrl: 'apex/EventLead_Continue'}).
+        when('/', {controller: 'HomeCtrl', templateUrl: 'apex/EventLead_Home'}).
+        when('/login', {controller: 'LoginCtrl', templateUrl: 'apex/EventLead_Login'}).
+        when('/offers', {controller: 'OfferListCtrl', templateUrl: 'apex/EventLead_Offer'}).
+        when('/contacts', {controller: 'ContactListCtrl', templateUrl: 'apex/EventLead_Contact'}).
+        when('/newContact', {controller: 'ContactCreateCtrl', templateUrl: 'apex/EventLead_NewContact'}).
+        when('/view/:offerId', {controller: 'OfferViewCtrl', templateUrl: 'apex/EventLead_ViewOffer'}).
+        when('/continue', {controller: 'ContinueCtrl', templateUrl: 'apex/EventLead_Continue'}).
         otherwise({redirectTo: '/'});
 });
 /**
