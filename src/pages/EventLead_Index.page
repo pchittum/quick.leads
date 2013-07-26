@@ -360,6 +360,10 @@
     <script src="{!URLFOR($Resource.EventLeadResources, 'js/directives.js')}"></script>
     <script src="{!URLFOR($Resource.EventLeadResources, 'js/filters.js')}"></script>
 
+<<<<<<< HEAD
+=======
+<!-- Raja's cool trick working on static files on local web server -->
+>>>>>>> alpha
 <!-- 
 	Raja Rao's cool trick for prototyping static files on local web server
 	For more view his blog post here: http://bit.ly/FDCStaticFilePrototyping

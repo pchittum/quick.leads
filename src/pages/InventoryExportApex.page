@@ -1,6 +1,0 @@
-<apex:page controller="WarehouseCSVController" showHeader="false" contentType="text/csv#InventoryExport.csv" readOnly="true">
-    {!$ObjectType.Merchandise__c.fields.Name.name},{!$ObjectType.Merchandise__c.fields.Quantity__c.name},{!$ObjectType.Merchandise__c.fields.Price__c.name}
-    <apex:repeat value="{!merchandise}" var="m">
-    	{!m.Name},{!m.Quantity__c},{!m.Price__c}
-    </apex:repeat>
-</apex:page>
