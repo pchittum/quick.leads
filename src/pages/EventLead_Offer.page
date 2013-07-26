@@ -13,7 +13,8 @@
         <div class="gridwrapper" >
             <div class="grid" ng-repeat="campaign in offers" ng-click="selectOffer(campaign.Id)">   
                 <div class="image">
-                    <img src="{{campaign.EventLead_ImageURL__c}}"/>
+                	<img ng-show="!campaign.EventLead_ImageURL__c || campaign.EventLead_ImageURL__c.length < 1" src="{!URLFOR($Resource.EventLeadResources, 'images/offer.png')}"/>
+                    <img ng-show="campaign.EventLead_ImageURL__c && campaign.EventLead_ImageURL__c.length > 0" src="{{campaign.EventLead_ImageURL__c}}"/>
                 </div>
                 <div class="title">
                     {{campaign.Name}}
@@ -26,12 +27,13 @@
     <div class="visible-phone">
          <div class="heading1">
              <img ng-src="{{offers[0].Parent.EventLead_ImageURL__c}}"/>
-             Welcome to your event {{offers[0].Parent.Name}}
+             <div ng-show="offers && offers.length > 0">Welcome to {{offers[0].Parent.Name}}</div>
          </div>
          <div class="gridwrapper" >
             <div class="grid" ng-repeat="campaign in offers" ng-click="selectOffer(campaign.Id)">
-                <div class="image">
-                    <img src="{{campaign.EventLead_ImageURL__c}}"/>
+                <div class="image" style="background:#ffffff">
+                	<img ng-show="!campaign.EventLead_ImageURL__c || campaign.EventLead_ImageURL__c.length < 1" src="{!URLFOR($Resource.EventLeadResources, 'images/offer.png')}"/>
+                    <img ng-show="campaign.EventLead_ImageURL__c && campaign.EventLead_ImageURL__c.length > 0" src="{{campaign.EventLead_ImageURL__c}}"/>
                 </div>
                 <div class="title">
                     {{campaign.Name}}
