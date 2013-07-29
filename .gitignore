@@ -2,6 +2,7 @@
 
 .settings/
 salesforce.schema
+raw-files/EventLeadResources/static_server.js
 
 # OS generated files
 
