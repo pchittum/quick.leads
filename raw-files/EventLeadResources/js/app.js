@@ -1,9 +1,34 @@
 // BEGIN app.js
-var app = angular.module('EventLeadVF', ['AngularForce', 'AngularForceObjectFactory', 'Event', 'Offer', 'Contact', 'Lead', 'CampaignMember']); //removed contact
+/**
+ * quick.leads
+ * author: Peter Chittum @pchittum and Nick Eales @nmeales
+ *
+ * quick.leads began its life as "EventLead" so everything you see here will use that 
+ * reference name. Originally based on the Angular mobile quick start contact application
+ * found in the Developerforce github repo: https://github.com/developerforce/MobilePack-AngularJS
+ * 
+ * 
+ * app serves as the global scoped variable for this angular app. use this when pushing 
+ * new angular features into the angular context. 
+ * 
+ * 'EventLead' is the name of the primary Angular module. 
+ */
+var app = angular.module('EventLeadVF', ['AngularForce', 'AngularForceObjectFactory', 'Event', 'Offer', 'Lead', 'CampaignMember']); //removed contact
+
+/**
+ * put SFConfig constant onto the Angular stack. Holds session info. In the context of this Visualforce app, this is 
+ * the session id, which allows us to make API calls without performing a login.
+ *
+ * there is some relic code in the getSFConfig function around the heroku hosted and cordova (phone gap)
+ * use cases which I have chosen to leave in place. partly in case I decide to port this app later, and
+ * partly for other developers who might want to see this.  
+ */
 app.constant('SFConfig', getSFConfig());
 
 /**
  * Configure all the AngularJS routes here.
+ *
+ * /login not really in use. this existed as a hold-over from the start
  */
 app.config(function ($routeProvider) {
     $routeProvider.
@@ -42,11 +67,11 @@ function getSFConfig() {
     if (href.indexOf('file:') >= 0) { //Phonegap 
         return {};
     } else {
-        if (configFromEnv.sessionId) {
+        if (configFromEnv.sessionId) { // in Visualforce case, we execute this block. 
             return {
                 sessionId: configFromEnv.sessionId
             }
-        } else {
+        } else { // RELIC CODE: for hosted heroku app, this is the code we execute to ready us for the OAuth flow
             if (!configFromEnv || configFromEnv.client_id == "" || configFromEnv.client_id == "undefined"
                 || configFromEnv.app_url == "" || configFromEnv.app_url == "undefined") {
                 throw 'Environment variable client_id and/or app_url is missing. Please set them before you start the app';

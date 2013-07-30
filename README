@@ -1,10 +1,12 @@
 quick.leads
 
+author: Peter Chittum @pchittum and Nick Eales @nmeales
+
 Mobile Event Lead App for Force.com
 
 Typically collecting a lead from an event, converence, or expo is simply scanning a badge which gets stuck in a list of hundreds of leads without any context as to the nature of the converstaion.
 
-Event lead uses Salesforce Campaigns to create a set of offers that can record the specific interest or product that a customer inquired about.
+quick.leads uses Salesforce Campaigns to create a set of offers that can record the specific interest or product that a customer inquired about.
 
 The event is represented by a top level campaign of type Seminar/Conference that is Active and with a Status of "In Progress"
 

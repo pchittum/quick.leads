@@ -1,8 +1,8 @@
-<apex:page title="Event Lead" showHeader="false" sidebar="false" standardStylesheets="false">
+<apex:page title="quick.leads" showHeader="false" sidebar="false" standardStylesheets="false">
 <html ng-app="EventLeadVF">
     
 <head>
-    <title>Event Leads</title>
+    <title>quick.leads</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet" />
 <!-- for prototyping and playing with CSS -->
@@ -339,7 +339,10 @@
         
     </style>
  -->
-    <!-- relic from mobile pack application. not used in Visualforce, but I'll keep this here for now -->
+    <!-- 
+    	This little snipped feeds the session ID from the Visualforce page global vars into an object
+    	that will be used to connect to 
+	 -->
     <script type="text/javascript">
         //Get configuration from environment variables (via heroku or localhost env)
         var configFromEnv = {};
@@ -359,23 +362,23 @@
     <script src="{!URLFOR($Resource.EventLeadResources, 'js/controllers.js')}"></script>
     <script src="{!URLFOR($Resource.EventLeadResources, 'js/directives.js')}"></script>
     <script src="{!URLFOR($Resource.EventLeadResources, 'js/filters.js')}"></script>
+ 
 
 <!-- 
 	Raja Rao's cool trick for prototyping static files on local web server
 	For more view his blog post here: http://bit.ly/FDCStaticFilePrototyping
 
-    <script src="http://localhost:3000/EventLead/js/app.js"></script>
-    <script src="http://localhost:3000/EventLead/js/services.js"></script>
-    <script src="http://localhost:3000/EventLead/js/controllers.js"></script>
-    <script src="http://localhost:3000/EventLead/js/directives.js"></script>
-    <script src="http://localhost:3000/EventLead/js/filters.js"></script>
---> 
-
+    <script src="http://localhost:3000/js/app.js"></script>
+    <script src="http://localhost:3000/js/services.js"></script>
+    <script src="http://localhost:3000/js/controllers.js"></script>
+    <script src="http://localhost:3000/js/directives.js"></script>
+    <script src="http://localhost:3000/js/filters.js"></script>
+-->
 </head>
 <body>
 <div class="header">
     <a onClick="window.location = '/apex/EventLead_Index';"><img id="icon" src="{!URLFOR($Resource.EventLeadResources,'/images/icon.png')}"/></a>
-    <a class="brand" href="#">Event Leads</a>
+    <a class="brand" href="#">quick.leads</a>
 </div>
 
 <div class="container">

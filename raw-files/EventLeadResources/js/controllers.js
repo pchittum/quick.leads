@@ -1,9 +1,6 @@
-//BEGIN controllers.js
-
-//**
-// * Controller for EventLead_Home partial
-// */
-//angular.module('EventLeadVF').controller('WonderDetailCtrl',
+/**
+ * Controller for EventLead_Home partial
+ */
 angular.module('EventLeadVF').controller('HomeCtrl', ['$scope', 'AngularForce', '$location', '$route', 'Event', 'ActiveEvent',
 	function($scope, AngularForce, $location, $route, Event, ActiveEvent) {
 	
@@ -21,14 +18,12 @@ angular.module('EventLeadVF').controller('HomeCtrl', ['$scope', 'AngularForce', 
 		
 		//TODO: not implemented currently
 		//at some point this will likely come up for larger organizations where there might be many active event-type campaigns
+		//an alternative I will explore is to actually use the built-in filter features of AngularJS so that
+		//we retrieve and cache a number of parent campaigns on app load and then filter our model on the client side
+		//in this case the filter will be imlemented on EventLead_Home.page
 	    Event.query(
 	        function (data) {
 	            $scope.events = data.records;
-	            
-	//          if ($scope.events.length > 0) {
-	//              ActiveEvent.EventName = $scope.events[0].Parent.Name; 
-	//          }
-	            
 	            $scope.$apply();//Required coz sfdc uses jquery.ajax
 	        }, 
 	        function (data) {
@@ -45,8 +40,9 @@ angular.module('EventLeadVF').controller('HomeCtrl', ['$scope', 'AngularForce', 
 	        
 	        $location.path('/offers');  
 	        
-	    }
+	    } //$scope.setCampaign
 	    
+	    //another relic from the hosted and cordova versions of the app
 	    $scope.logout = function () {
 	        AngularForce.logout();
 	        $location.path('/login');
@@ -54,9 +50,9 @@ angular.module('EventLeadVF').controller('HomeCtrl', ['$scope', 'AngularForce', 
 	}
 ]);
 
-//**
-// * Controller for Login page controller. Not used typically for VF app
-// */
+/**
+ * Controller for Login page controller. Not used typically for VF app
+ */
 angular.module('EventLeadVF').controller('LoginCtrl',['$scope', 'AngularForce', '$location',
 	function($scope, AngularForce, $location) {
 		$scope.login = function () {
@@ -71,16 +67,17 @@ angular.module('EventLeadVF').controller('LoginCtrl',['$scope', 'AngularForce', 
 	}
 ]);
 
-//Not in use. Hold-over from Quick Start app. Leaving this here to have an example for a callback function 
+//Relic from Quick Start app. Callback function for successful login. Never tested with this disabled, so leaving it.
 angular.module('EventLeadVF').controller('CallbackCtrl',['$scope', 'AngularForce', '$location',
 	function($scope, AngularForce, $location) {
 		AngularForce.oauthCallback(document.location.href);
 		$location.path('/home');
 	}
 ]);
-//**
-// * Controller for EventLead_Offer partial. Present a list of child campaigns of our Event campaign. Implements actions for selecting an offer. 
-// */
+
+/**
+ * Controller for EventLead_Offer partial. Present a list of child campaigns of our Event campaign. Implements actions for selecting an offer. 
+ */
 
 angular.module('EventLeadVF').controller('OfferListCtrl', ['$scope', 'AngularForce', '$location', 'Offer', 'ActiveEvent', 'NewLeadService',
 	function($scope, AngularForce, $location, Offer, ActiveEvent, NewLeadService) {
@@ -111,14 +108,14 @@ angular.module('EventLeadVF').controller('OfferListCtrl', ['$scope', 'AngularFor
 			} else {
 				$location.path('/contacts');
 			}
-		};
+		}; //$scope.selectOffer
 	}
 ]);
 
-//**
-// * Controller for EventLead_Contact partial. Present a list of contacts. Implements actions for selecting an offer. 
-// * Actual underlying data is Lead.
-// */
+/**
+ * Controller for EventLead_Contact partial. Present a list of contacts. Implements actions for selecting an offer. 
+ * Actual underlying data is Lead sObject.
+ */
 angular.module('EventLeadVF').controller('ContactListCtrl',['$scope', 'AngularForce', '$location', 'Lead', 'NewLeadService', 'ActiveEvent',
 	function($scope, AngularForce, $location, Lead, NewLeadService, ActiveEvent) {
 		$scope.authenticated = AngularForce.authenticated();
@@ -130,7 +127,7 @@ angular.module('EventLeadVF').controller('ContactListCtrl',['$scope', 'AngularFo
 		$scope.working = false;
 		$scope.contacts = [];
 	
-		//PJCTODO: must consider moving this to the time of selection instead of here
+		//TODO: considering moving this to the time of selection instead of here
 		Lead.setNewWhere('Id in (SELECT LeadId FROM CampaignMember WHERE CampaignId = \'' + ActiveEvent.EventId + '\')');
 
 		$scope.isWorking = function () {
@@ -139,7 +136,7 @@ angular.module('EventLeadVF').controller('ContactListCtrl',['$scope', 'AngularFo
 
 	//SOSL safe search: must include at least two characters for valid search
 		$scope.doSearch = function () {
-			if ($scope.searchTerm || $scope.searchTerm > 1) {
+			if ($scope.searchTerm && $scope.searchTerm.length > 1) { //search invokes SOSL, so we do not want to invoke this unless we have at least 2 characters (SOSL search rules)
 				Lead.search($scope.searchTerm, function (data) {
 					$scope.contacts = data;
 					$scope.$apply();//Required coz sfdc uses jquery.ajax
@@ -148,7 +145,7 @@ angular.module('EventLeadVF').controller('ContactListCtrl',['$scope', 'AngularFo
 			} else {
 				$scope.contacts = [];
 			}
-		};
+		}; //$scope.doSearch
 
 		$scope.doView = function (contact) {
   
@@ -160,7 +157,7 @@ angular.module('EventLeadVF').controller('ContactListCtrl',['$scope', 'AngularFo
 
 			console.log('doView');
 			$location.path('/view/' + NewLeadService.OfferId);
-		};
+		}; //$scope.doView
 
 		$scope.doCreate = function () {
 			$location.path('/newContact');
@@ -168,8 +165,10 @@ angular.module('EventLeadVF').controller('ContactListCtrl',['$scope', 'AngularFo
 	}
 ]);
 
-//says "Contact" but really is a lead
-//initially I was using contacts for everything
+/**
+ * Controller for EventLead_ContactCreate partial. Create new Lead record and attach to parent Campaign (Event). 
+ * Actual underlying data is Lead.
+ */
 angular.module('EventLeadVF').controller('ContactCreateCtrl',['$scope', 'AngularForce', '$location', 'Lead', 'NewLeadService', 'CampaignMember', 'ActiveEvent',
 	function($scope, AngularForce, $location, Lead, NewLeadService, CampaignMember, ActiveEvent) {
 
@@ -178,14 +177,19 @@ angular.module('EventLeadVF').controller('ContactCreateCtrl',['$scope', 'Angular
 			LeadId : '', 
 			CampaignId : ActiveEvent.EventId, 
 			Status : 'Attendee' 
-		}
+		} //@scope.cmpMember
 
 		$scope.save = function () {
 	
 			console.log('company name: ' + $scope.contact.CompanyName);
 			console.log('first name: ' + $scope.contact.FirstName);
 		
-			//PJCTODO: might dispense with below. by creating lead here holding lead state probably is irrelevant
+			//TODO: might dispense with below. by creating lead here holding lead state probably is irrelevant
+			//kept for initial app launch. originally I was working with both contact and lead for the sake of
+			//simplicity and to not have to resolve new contacts to Accounts, I've made is so that this app
+			//only deals with leads. Since we are always creating a lead now in advance of the actual offer
+			//presentation, we no longer need to cache a lead state except for an ID in the save callback function
+			//below. 
 			NewLeadService.CompanyName = $scope.contact.Company;
 			NewLeadService.FirstName = $scope.contact.FirstName;
 			NewLeadService.LastName = $scope.contact.LastName;
@@ -206,11 +210,20 @@ angular.module('EventLeadVF').controller('ContactCreateCtrl',['$scope', 'Angular
 					$scope.$apply(function () {            
 						$location.path('/view/' + NewLeadService.OfferId);
 					});
-				});
-			});
+				}); //CampaignMember.save(...)
+			}); //$Lead.save(...)
+		} //$scope.save
+		
+		$scope.doCancel = function () {
+			$location.path('/offers');
 		}
 	}
 ]);
+
+/**
+ * Controller for EventLead_Contact partial. Present a list of contacts. Implements actions for selecting an offer. 
+ * Actual underlying data is Lead.
+ */
 
 angular.module('EventLeadVF').controller('OfferViewCtrl',['$scope', 'AngularForce', '$location', '$routeParams', 'Offer', 'NewLeadService', 'CampaignMember', 'Lead',
 	function($scope, AngularForce, $location, $routeParams, Offer, NewLeadService, CampaignMember, Lead) {
@@ -228,7 +241,8 @@ angular.module('EventLeadVF').controller('OfferViewCtrl',['$scope', 'AngularForc
 			});
 		});
 	
-		//PJCTODO: Clean Up once lead is the single point of truth
+		//TODO: Again a RELIC from the contact version of things. I am keeping this for now, but could
+		//easily be removed unless you want to keep the lead as the only campaign member.
 		$scope.newLead = {
 			FirstName : NewLeadService.FirstName,
 			LastName : NewLeadService.LastName, 
@@ -237,16 +251,14 @@ angular.module('EventLeadVF').controller('OfferViewCtrl',['$scope', 'AngularForc
 			Status : NewLeadService.LeadStatus,
 			LeadSource : NewLeadService.LeadSource,
 			Id : '' 
-		}
-		console.log($scope.newLead);
+		} //$scope.newLead object
 	
 		$scope.cmpMember = {
 			ContactId : '', //currently not used - Lead campaign members indicate responses for this app
 			LeadId : NewLeadService.LeadId, 
 			CampaignId : NewLeadService.OfferId,
 			Status : '' //to be set when accepted or rejected
-		}
-		console.log($scope.cmpMember);
+		} //$scope.cmpMember object
 	
 		$scope.acceptOffer = function() {
 	
@@ -266,7 +278,7 @@ angular.module('EventLeadVF').controller('OfferViewCtrl',['$scope', 'AngularForc
 	
 			console.log(NewLeadService);
 
-		}
+		} //$scope.acceptOffer
 	
 		$scope.rejectOffer = function() {
 	
@@ -286,10 +298,16 @@ angular.module('EventLeadVF').controller('OfferViewCtrl',['$scope', 'AngularForc
 	
 			console.log(NewLeadService);
 
-		}
+		} //$scope.rejectOffer
 
 	}
 ]);
+
+/**
+ * Controller for EventLead_Continue partial. Choice to hold onto current Lead in context or clear and 
+ * allowing selection of a new contact next time through 
+ * 
+ */
 
 angular.module('EventLeadVF').controller('ContinueCtrl', ['$scope','$location','AngularForce','NewLeadService',
     function($scope, $location, AngularForce, NewLeadService){
@@ -300,7 +318,7 @@ angular.module('EventLeadVF').controller('ContinueCtrl', ['$scope','$location','
         
         $scope.keepLead = function(){
             $location.path('/home');
-        }   
+        }  
         
         $scope.clearLead = function(){
             NewLeadService.LeadId = '';
@@ -311,8 +329,6 @@ angular.module('EventLeadVF').controller('ContinueCtrl', ['$scope','$location','
             NewLeadService.Phone = '';
             NewLeadService.Title = '';
             $location.path('/home');
-        }
+        } //$scope.clearLead
     }
 ]);
-   
-//END controllers.js

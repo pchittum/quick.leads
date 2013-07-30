@@ -2,4 +2,5 @@
 <StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
     <cacheControl>Public</cacheControl>
     <contentType>application/zip</contentType>
+    <description>static web content for quick.leads HTML5 application. includes styles.css, angular-force.js, forcetk.js, forcetk.ui.js and images for app.</description>
 </StaticResource>
