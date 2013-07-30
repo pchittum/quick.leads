@@ -4,26 +4,30 @@ author: Peter Chittum @pchittum and Nick Eales @nmeales
 
 Mobile Event Lead App for Force.com
 
-Typically collecting a lead from an event, converence, or expo is simply scanning a badge which gets stuck in a list of hundreds of leads without any context as to the nature of the converstaion.
+Typically collecting a lead from an event, conference, or expo is simply scanning a badge which gets stuck in a list of hundreds of leads without any context as to the nature of the converstaion.
 
 quick.leads uses Salesforce Campaigns to create a set of offers that can record the specific interest or product that a customer inquired about.
 
-The event is represented by a top level campaign of type Seminar/Conference that is Active and with a Status of "In Progress"
+The event is represented by a top level campaign of type Seminar/Conference, Conference, or Trade Show and with a Status of "In Progress"
 
 Child campaigns (with Status of "In Progress") in the campaign hierarchy represent the individual offers or topics that you are tracking for the event.
+
+To enhance the app, you could plug in declarative features such as Lead assignment rules, workflow email rules and email templates on CampaignMember. 
 
 Bugs
 - Need to reconcile that Lead can only be a CampaignMember of a give campaign once. No duplicates allowed. My bandaid is to just get out on error, but I need to put some proper error checking all over, and see about some kind of validation where if someone is a lead attached to one of the campaigns we show it or prevent that route. 
 
 Wish list:
-- Embed external content, video embed in in View Offer page
+- Better leveraging of AngularJS architecture by reducing searches and moving more cached data into the model.
+	- Loading Events once and using an Angular Filter on Home page
+	- Loading top level campaign members on Contact page and using Angular Filter for search
+	- Caching offers and not requerying except when selecting Event again. 
+- Better UX around in progress page loads, searches, AJAX calls, etc. I was grossly negligent in this regard and I'm sure it will be easy to do with either some built-in Angular or Bootstrap features. 
+- To be able to embed external content on offer presentation page or description, video embed in in View Offer page
 - Event-specific branding (beyond just an image)
 - Mobile analytics for campaign results and lead gen statistics
-
-Personal TODO's:
-- clean up TODO's
-- test deploy to Event Org
-- Compile list of declarative stuff (workflows and such)
+- Visualforce tool to take a list of contacts and associate them with the parent campaign as Leads
+- Utilize contacts for Event campaign members, would require selection or creation of Account. Contacts without Accounts don't get treated the same during Lead conversion deduping, etc.  
 
 Install unmanaged package from: 
 https://login.salesforce.com/packaging/installPackage.apexp?p0=04tG00000002d1f

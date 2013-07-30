@@ -52,11 +52,11 @@
     <!-- This div is only displayed in mobile phones (see above for desktops) -->
     <div class="visible-phone">
         <div class="searchheader">
-            <input style="width: 90%" type="text" ng-model="searchTerm" class="search-query portrait" placeholder="Enter Search Criteria" />
+            <input style="width: 90%" type="text" ng-model="searchTerm" class="search-query portrait" placeholder="Search Contacts" />
             <i style="margin-top: 9px; margin-left: 8px;" class="icon-search" ng-click="doSearch()"></i>
         </div>
         <div class="heading1">
-            Contacts
+            Find or Create (+) Contact
         </div>
         <a href="#/newContact" class="addbutton"><img class="plus" src="{!URLFOR($Resource.EventLeadResources,'/images/plus.png')}"/></a>
 
