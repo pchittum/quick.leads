@@ -16,6 +16,7 @@ To enhance the app, you could plug in declarative features such as Lead assignme
 
 Bugs
 - Need to reconcile that Lead can only be a CampaignMember of a give campaign once. No duplicates allowed. My bandaid is to just get out on error, but I need to put some proper error checking all over, and see about some kind of validation where if someone is a lead attached to one of the campaigns we show it or prevent that route. 
+- Some orgs do not resolve VF pages to the c.xxx.visual.force.com host name which breaks the current angular-force.js visualforce detection feature. Plan to fix in early august.
 
 Wish list:
 - Better leveraging of AngularJS architecture by reducing searches and moving more cached data into the model.
@@ -30,9 +31,14 @@ Wish list:
 - Utilize contacts for Event campaign members, would require selection or creation of Account. Contacts without Accounts don't get treated the same during Lead conversion deduping, etc.  
 
 Install unmanaged package from: 
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tG00000002d1f
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tG00000002d1u
 
-NOTE: The permission set for the unmanaged package is currently untested. 
+Watch YouTube Video here: 
+http://youtu.be/eqCP6xEgSvk
+
+NOTES: 
+- The permission set for the unmanaged package is currently untested. 
+- Running in the Visualforce Inline Page Editor interferes with AngularJS and the app will not function correctly.
 
 Technical Notes: 
 quick.leads is an HTML5 application built on the Force.com platform using Visualforce with AngularJS and Twitter Bootstrap. The back end is comprised entirely of Standard Salesforce.com CRM objects and so requires a full Salesforce license.
